@@ -229,7 +229,7 @@ main {
     height: 2px;
     background-color: var(--text-light);
     margin: 6px auto;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
 }
 
 .hamburger-menu.active span:nth-child(1) {
@@ -238,7 +238,6 @@ main {
 
 .hamburger-menu.active span:nth-child(2) {
     opacity: 0;
-    transform: translateX(-20px);
 }
 
 .hamburger-menu.active span:nth-child(3) {
@@ -272,131 +271,95 @@ main {
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    /* Performance Optimizations */
-    * {
-        -webkit-tap-highlight-color: transparent;
-        touch-action: manipulation;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-    }
-
-    /* Simplified Mobile Menu */
+    /* Mobile Menu */
     .hamburger-menu {
         display: block;
         position: fixed;
         top: 10px;
         right: 10px;
-        width: 44px;
-        height: 44px;
-        padding: 10px;
-        z-index: 2000;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        touch-action: manipulation;
     }
 
-    .hamburger-menu span {
-        display: block;
-        width: 24px;
-        height: 2px;
-        margin: 5px 0;
-        background-color: var(--text-light);
-        transition: transform 0.2s ease-out;
-    }
-
-    /* Optimized Mobile Navigation */
     .nav-menu {
         position: fixed;
         top: 0;
-        right: -100%;
+        left: -100%;
         width: 100%;
-        height: 100%;
-        background: var(--background-dark);
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        padding-top: 60px;
+        transition: all 0.3s ease-in-out;
         z-index: 1500;
-        transition: transform 0.3s ease-out;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        transform: translateX(100%);
     }
 
     .nav-menu.active {
-        transform: translateX(-100%);
+        left: 0;
     }
 
     .nav-menu ul {
-        display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 80px 0 20px;
-        height: 100%;
-        opacity: 1;
-        transform: none;
+        padding: 2rem 0;
     }
 
     .nav-menu ul li {
-        width: 100%;
-        text-align: center;
-        margin: 10px 0;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        transition-delay: calc(0.1s * var(--i));
+    }
+
+    .nav-menu.active ul li {
         opacity: 1;
-        transform: none;
+        transform: translateY(0);
     }
 
     .nav-link {
         display: block;
-        padding: 15px;
-        font-size: 1.2rem;
+        padding: 1rem 2rem;
+        font-size: 1.4rem;
         width: 100%;
         text-align: center;
+        transition: all 0.3s ease;
     }
 
-    /* Optimized Sections */
+    .nav-link:active {
+        color: var(--primary-color);
+    }
+
+    /* Mobile Sections */
     .section {
         min-height: 100vh;
-        padding: 20px;
-        opacity: 1;
-        transform: none;
-        will-change: auto;
-    }
-
-    .section.visible {
-        opacity: 1;
-        transform: none;
+        padding: 1rem;
+        margin: 0;
     }
 
     .section-content {
-        padding: 15px;
-        opacity: 1;
-        transform: none;
-        will-change: auto;
+        padding: 1rem;
     }
 
-    .section-content.visible {
-        opacity: 1;
-        transform: none;
+    /* Mobile Typography */
+    .hero-content h1 {
+        font-size: 2.25rem;
     }
 
-    /* Simplified Project Cards */
-    .project-card {
-        transform: none !important;
-        transition: none !important;
-        will-change: auto;
+    .role-text {
+        font-size: 1.2rem;
     }
 
-    .project-card:active {
-        background: rgba(255, 255, 255, 0.15);
-    }
-
-    /* Optimized Buttons */
+    /* Mobile Buttons */
     .download-btn, .resume-btn {
-        -webkit-tap-highlight-color: transparent;
-        transition: background-color 0.2s ease-out;
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
     }
 
-    .download-btn:active, .resume-btn:active {
-        background: #0099cc;
+    /* Mobile LinkedIn Button */
+    .linkedin-button {
+        bottom: 1rem;
+        right: 1rem;
+        left: auto;
+        width: 40px;
+        height: 40px;
     }
 
     /* Disable Parallax on Mobile */
