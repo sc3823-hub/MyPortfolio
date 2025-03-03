@@ -1,0 +1,183 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('5753195.webp') no-repeat center center/cover;
+    background-attachment: fixed;
+    color: white;
+    position: relative;
+}
+
+/* Dark Overlay to Reduce Background Image Opacity */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+/* Navigation Bar */
+header {
+    background: rgba(0, 0, 0, 0.9);
+    padding: 15px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+nav ul li {
+    margin: 0 15px;
+}
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+nav ul li a:hover {
+    color: #00c3ff;
+}
+
+/* Home Section */
+.hero {
+    padding: 180px 20px;
+    width: 50%;
+    margin-left: 5%;
+    text-align: left;
+    font-size: 32px;
+    font-weight: bold;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Role in Orange */
+.hero p {
+    color: #FFA500; /* Orange */
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Add Long Gap Between Sections */
+.long-gap {
+    height: 200px;
+}
+
+/* About, Projects, and Resume Sections (Initially Hidden & Slide Effect) */
+#about, #projects, #resume {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+    padding: 100px 20px;
+    width: 50%;
+    margin-left: 5%;
+    text-align: left;
+}
+
+/* Increased Font Size for About & Projects */
+#about h2, #projects h2 {
+    font-size: 36px;
+    font-weight: bold;
+}
+#about p, #projects p {
+    font-size: 20px;
+    line-height: 1.6;
+}
+/* Project Section Styling - Remove Bullet Points & Reduce Font Size */
+.project-item {
+    font-size: 14px; /* Reduced text size */
+    padding: 8px 0;
+    margin-left: 5px;
+}
+
+/* Slide Effect */
+#about, #projects, #resume {
+    transform: translateX(100%);
+}
+
+/* Smooth Scroll Button */
+.btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 24px;
+    background-color: #0077B5;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #005582;
+}
+
+/* Reset LinkedIn Floating Button */
+.linkedin-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #0077B5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out;
+}
+
+.linkedin-button img {
+    width: 30px;
+    height: 30px;
+    filter: invert(1);
+}
+
+.linkedin-button:hover {
+    transform: scale(1.1);
+    background-color: #005582;
+}
+
+/* Footer */
+footer {
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    text-align: left;
+    padding: 20px;
+    font-weight: bold;
+    margin-left: 5%;
+}
+
+/* Contact Section - Centered */
+#contact {
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    text-align: center; /* Centered Text */
+    padding: 30px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Red Colored Email */
+#contact a {
+    color: #FFA500; /* Orange */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#contact a:hover {
+    text-decoration: underline;
+}
