@@ -165,30 +165,41 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Section visibility
-    const sectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const section = entry.target;
+    // Show section with optimized performance
+    function showSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
+
+        // Pre-load next section
+        if (!visitedSections.has(sectionId)) {
+            visitedSections.add(sectionId);
+            section.style.display = 'flex';
+            requestAnimationFrame(() => {
                 section.classList.add('visible');
-                if (section.querySelector('.section-content')) {
-                    section.querySelector('.section-content').classList.add('visible');
-                }
-                updateActiveNavLink(section.id);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '-10% 0px -10% 0px'
-    });
+            });
+        }
 
-    sections.forEach(section => sectionObserver.observe(section));
+        const offset = isMobile ? 60 : 80;
+        const targetPosition = section.offsetTop - offset;
 
-    // Smooth scroll
+        // Optimized smooth scroll
+        if (isMobile) {
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        } else {
+            smoothScrollTo(targetPosition);
+        }
+
+        updateActiveNavLink(sectionId);
+    }
+
+    // Optimized smooth scroll
     function smoothScrollTo(targetPosition) {
         const startPosition = window.pageYOffset;
         const distance = targetPosition - startPosition;
-        const duration = 600;
+        const duration = 500; // Reduced duration for smoother feel
         let start = null;
 
         function animation(currentTime) {
@@ -196,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const timeElapsed = currentTime - start;
             const progress = Math.min(timeElapsed / duration, 1);
 
-            const ease = t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            const ease = t => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
             const position = startPosition + distance * ease(progress);
 
             window.scrollTo(0, position);
@@ -209,24 +220,29 @@ document.addEventListener("DOMContentLoaded", function () {
         requestAnimationFrame(animation);
     }
 
-    // Show section
-    function showSection(sectionId) {
-        if (!visitedSections.has(sectionId)) {
-            visitedSections.add(sectionId);
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.classList.add('visible');
-                const targetPosition = section.offsetTop - 60;
-                smoothScrollTo(targetPosition);
+    // Optimized section observer
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const section = entry.target;
+                requestAnimationFrame(() => {
+                    section.classList.add('visible');
+                    const content = section.querySelector('.section-content');
+                    if (content) {
+                        requestAnimationFrame(() => {
+                            content.classList.add('visible');
+                        });
+                    }
+                    updateActiveNavLink(section.id);
+                });
             }
-        } else {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                const targetPosition = section.offsetTop - 60;
-                smoothScrollTo(targetPosition);
-            }
-        }
-    }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '-5% 0px -5% 0px'
+    });
+
+    sections.forEach(section => sectionObserver.observe(section));
 
     // Update active link
     function updateActiveNavLink(sectionId) {
@@ -247,6 +263,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add scroll event listener
     window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Preload background image
+    window.addEventListener('load', () => {
+        const img = new Image();
+        img.src = '5753195.webp';
+        img.onload = () => {
+            document.body.classList.add('bg-loaded');
+        };
+    });
 });
 
 // Disable parallax effect on mobile
