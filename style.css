@@ -124,9 +124,10 @@ main {
 }
 
 #home {
+    padding-top: 60px;
+    min-height: 100vh;
     display: flex;
     opacity: 1;
-    padding-top: 80px;
 }
 
 .section-content {
@@ -145,6 +146,7 @@ main {
     text-align: center;
     padding: 2rem;
     margin: auto;
+    min-height: calc(100vh - 120px);
 }
 
 .section-content.visible {
@@ -154,18 +156,21 @@ main {
 
 /* Section Spacing */
 .section:not(:first-child) {
-    padding-top: 80px;
+    padding-top: 60px;
+    margin-top: 0;
 }
 
 /* Adjust vertical spacing for better centering */
 .section-title {
+    font-size: 2.5rem;
     margin-bottom: 3rem;
     text-align: center;
+    position: relative;
+    padding-bottom: 1rem;
 }
 
 .section-title::after {
-    left: 50%;
-    transform: translateX(-50%);
+    display: none; /* Remove blue underline */
 }
 
 /* Projects Grid */
@@ -176,12 +181,19 @@ main {
     width: 100%;
     max-width: 1200px;
     margin: 2rem auto;
+    place-items: center;
 }
 
 /* Home Section */
 .hero-content {
     max-width: 800px;
+    width: 100%;
     padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .hero-content h1 {
@@ -324,6 +336,7 @@ main {
     .section-content {
         padding: 1rem;
         transform: translateY(10px);
+        min-height: calc(100vh - 80px);
     }
 
     #home {
@@ -484,6 +497,11 @@ main {
     header {
         transform: none !important;
         will-change: auto;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
     }
 }
 
