@@ -1,60 +1,80 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Function to show section and hide others
     function showSection(sectionId) {
-        let aboutSection = document.getElementById("about");
-        let projectsSection = document.getElementById("projects");
-        let resumeSection = document.getElementById("resume");
+        // Hide all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.remove('active');
+        });
 
-        // Hide all sections first
-        aboutSection.style.display = "none";
-        projectsSection.style.display = "none";
-        resumeSection.style.display = "none";
-
-        let section = document.getElementById(sectionId);
-        section.style.display = "block";
-        section.style.opacity = "0";
-        section.style.transform = "translateX(100%)";
-        setTimeout(() => {
-            section.style.opacity = "1";
-            section.style.transform = "translateX(0)";
-        }, 100);
-        section.scrollIntoView({ behavior: "smooth" });
+        // Show selected section
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.classList.add('active');
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
     }
 
-    document.querySelector(".about-btn").addEventListener("click", function (e) {
-        e.preventDefault();
-        showSection("about");
+    // Event listeners for navigation
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const sectionId = this.getAttribute('href').substring(1);
+            showSection(sectionId);
+            
+            // Close mobile menu if open
+            const hamburger = document.querySelector('.hamburger-menu');
+            const navMenu = document.querySelector('.nav-menu');
+            if (hamburger && navMenu) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
     });
 
-    document.querySelector(".projects-btn").addEventListener("click", function (e) {
-        e.preventDefault();
-        showSection("projects");
+    // Mobile menu toggle
+    const hamburger = document.querySelector('.hamburger-menu');
+    const navMenu = document.querySelector('.nav-menu');
+
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+    }
+
+    // Initialize - show home section by default
+    showSection('home');
+
+    // Add active class to navigation links based on current section
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    function updateActiveLink() {
+        const currentSection = document.querySelector('section.active');
+        if (currentSection) {
+            const currentId = currentSection.id;
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    }
+
+    // Update active link when showing different sections
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === 'class') {
+                updateActiveLink();
+            }
+        });
     });
 
-    document.querySelector(".resume-btn").addEventListener("click", function (e) {
-        e.preventDefault();
-        showSection("resume");
-    });
-
-    document.querySelector(".home-btn").addEventListener("click", function (e) {
-        e.preventDefault();
-        document.getElementById("home").scrollIntoView({ behavior: "smooth" });
-    });
-});
-
-// Mobile Navigation Toggle
-const hamburger = document.querySelector('.hamburger-menu');
-const navMenu = document.querySelector('.nav-menu');
-
-hamburger?.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
-
-// Close mobile menu when clicking a link
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
+    document.querySelectorAll('section').forEach(section => {
+        observer.observe(section, { attributes: true });
     });
 });
 
@@ -148,28 +168,5 @@ document.querySelectorAll('.project-card').forEach(card => {
 
     card.addEventListener('mouseleave', () => {
         card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-    });
-});
-
-// Add active class to navigation links based on scroll position
-const sections = document.querySelectorAll('section');
-const navLinks = document.querySelectorAll('.nav-link');
-
-window.addEventListener('scroll', () => {
-    let current = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
-            current = section.getAttribute('id');
-        }
-    });
-
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').includes(current)) {
-            link.classList.add('active');
-        }
     });
 });
