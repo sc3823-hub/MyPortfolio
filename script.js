@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!ticking) {
             requestAnimationFrame(() => {
                 const currentScroll = window.pageYOffset;
-                if (Math.abs(currentScroll - lastScrollTop) > 50) {
+                if (Math.abs(currentScroll - lastScrollTop) > 30) {
                     handleScroll(currentScroll);
                     lastScrollTop = currentScroll;
                 }
@@ -170,36 +170,43 @@ document.addEventListener("DOMContentLoaded", function () {
         const section = document.getElementById(sectionId);
         if (!section) return;
 
-        // Pre-load next section
+        // Pre-load next section with optimized timing
         if (!visitedSections.has(sectionId)) {
             visitedSections.add(sectionId);
             section.style.display = 'flex';
+            
+            // Use double RAF for smoother animation
             requestAnimationFrame(() => {
-                section.classList.add('visible');
+                requestAnimationFrame(() => {
+                    section.classList.add('visible');
+                    const content = section.querySelector('.section-content');
+                    if (content) {
+                        content.classList.add('visible');
+                    }
+                });
             });
         }
 
         const offset = isMobile ? 60 : 80;
         const targetPosition = section.offsetTop - offset;
 
-        // Optimized smooth scroll
+        // Optimized smooth scroll with reduced duration
         if (isMobile) {
             window.scrollTo({
                 top: targetPosition,
                 behavior: 'smooth'
             });
         } else {
-            smoothScrollTo(targetPosition);
+            smoothScrollTo(targetPosition, 400); // Reduced duration
         }
 
         updateActiveNavLink(sectionId);
     }
 
-    // Optimized smooth scroll
-    function smoothScrollTo(targetPosition) {
+    // Optimized smooth scroll with configurable duration
+    function smoothScrollTo(targetPosition, duration = 400) {
         const startPosition = window.pageYOffset;
         const distance = targetPosition - startPosition;
-        const duration = 500; // Reduced duration for smoother feel
         let start = null;
 
         function animation(currentTime) {
@@ -207,7 +214,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const timeElapsed = currentTime - start;
             const progress = Math.min(timeElapsed / duration, 1);
 
-            const ease = t => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+            // Optimized easing function
+            const ease = t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
             const position = startPosition + distance * ease(progress);
 
             window.scrollTo(0, position);
@@ -220,25 +228,27 @@ document.addEventListener("DOMContentLoaded", function () {
         requestAnimationFrame(animation);
     }
 
-    // Optimized section observer
+    // Optimized section observer with better timing
     const sectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const section = entry.target;
+                // Use double RAF for smoother animation
                 requestAnimationFrame(() => {
-                    section.classList.add('visible');
-                    const content = section.querySelector('.section-content');
-                    if (content) {
-                        requestAnimationFrame(() => {
-                            content.classList.add('visible');
-                        });
-                    }
-                    updateActiveNavLink(section.id);
+                    requestAnimationFrame(() => {
+                        section.classList.add('visible');
+                        const content = section.querySelector('.section-content');
+                        if (content) {
+                            setTimeout(() => {
+                                content.classList.add('visible');
+                            }, 50);
+                        }
+                    });
                 });
             }
         });
     }, {
-        threshold: 0.1,
+        threshold: 0.15,
         rootMargin: '-5% 0px -5% 0px'
     });
 
@@ -271,6 +281,12 @@ document.addEventListener("DOMContentLoaded", function () {
         img.onload = () => {
             document.body.classList.add('bg-loaded');
         };
+    });
+
+    // Clean up event listeners when navigating away
+    window.addEventListener('unload', () => {
+        window.removeEventListener('scroll', onScroll);
+        sectionObserver.disconnect();
     });
 });
 
