@@ -2,130 +2,105 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
-    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
-    <script src="script.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-
     <!-- Navigation Bar -->
     <header>
         <div class="nav-container">
-            <button class="hamburger-menu" aria-label="Toggle navigation">
+            <button class="hamburger-menu" aria-label="Menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
             <nav class="nav-menu">
                 <ul>
-                    <li><a href="#" class="nav-link home-btn" data-tippy-content="Home">Home</a></li>
-                    <li><a href="#" class="nav-link about-btn" data-tippy-content="About Me">About</a></li>
-                    <li><a href="#" class="nav-link projects-btn" data-tippy-content="My Projects">Projects</a></li>
-                    <li><a href="#" class="nav-link resume-btn" data-tippy-content="View Resume">Resume</a></li>
-                    <li><a href="#contact" class="nav-link" data-tippy-content="Get in Touch">Contact</a></li>
+                    <li><a href="#home" class="nav-link" aria-label="Home">Home</a></li>
+                    <li><a href="#about" class="nav-link" aria-label="About">About</a></li>
+                    <li><a href="#projects" class="nav-link" aria-label="Projects">Projects</a></li>
+                    <li><a href="#resume" class="nav-link" aria-label="Resume">Resume</a></li>
+                    <li><a href="#contact" class="nav-link" aria-label="Contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Home Section -->
-    <section id="home" class="hero" data-aos="fade-right" data-aos-duration="1000">
-        <div class="hero-content">
-            <h1 class="glitch-text">Suraj Sagar Chathiri</h1>
-            <p class="typing-text">Data Analyst & Marketing Specialist</p>
-            <div class="hero-cta">
-                <a href="#about" class="cta-button">Learn More</a>
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero-content">
+                <h1>Suraj Sagar Chathiri</h1>
+                <p class="role-text">Data Analyst & Marketing Specialist</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <div class="long-gap"></div> <!-- Space Between Home & About -->
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="section-content">
+                <h2 class="section-title">About Me</h2>
+                <p>
+                    I am a highly motivated <span class="highlight">Business Analytics master's student</span> with strong analytical 
+                    and problem-solving skills. My expertise lies in <span class="highlight">data visualization (Tableau), 
+                    programming (Python, SQL), and business analytics.</span>
+                </p>
+            </div>
+        </section>
 
-    <!-- About Section -->
-    <section id="about" data-aos="fade-up" data-aos-duration="800">
-        <h2 class="section-title">About Me</h2>
-        <div class="about-content">
-            <p data-aos="fade-up" data-aos-delay="200">
-                I am a highly motivated <span class="highlight">Business Analytics master's student</span> with strong analytical 
-                and problem-solving skills. My expertise lies in <span class="highlight">data visualization (Tableau), 
-                programming (Python, SQL), and business analytics.</span>
-            </p>
-        </div>
-    </section>
-
-    <div class="long-gap"></div> <!-- Space Between About & Projects -->
-
-    <!-- Projects Section -->
-    <section id="projects" data-aos="fade-up" data-aos-duration="800">
-        <h2 class="section-title">Projects</h2>
-        <div class="projects-grid">
-            <div class="project-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="project-content">
-                    <h3>📂 Big Data Presentation</h3>
-                    <p>Overview of Big Data analytics.</p>
-                    <a href="Big_Data_Presentation.pptx" target="_blank" download class="download-btn">Download</a>
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <div class="section-content">
+                <h2 class="section-title">Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>📂 Big Data Presentation</h3>
+                        <p>Overview of Big Data analytics.</p>
+                        <a href="Big_Data_Presentation.pptx" class="download-btn" download>Download</a>
+                    </div>
+                    <div class="project-card">
+                        <h3>🖥️ Bike Share Data Files</h3>
+                        <p>Full project including Python code, Excel, and report.</p>
+                        <a href="Bike Share Data.zip" class="download-btn" download>Download</a>
+                    </div>
                 </div>
             </div>
-            <div class="project-card" data-aos="fade-up" data-aos-delay="400">
-                <div class="project-content">
-                    <h3>🖥️ Bike Share Data Files</h3>
-                    <p>Full project including Python code, Excel, and report.</p>
-                    <a href="Bike Share Data.zip" download class="download-btn">Download</a>
+        </section>
+
+        <!-- Resume Section -->
+        <section id="resume" class="section">
+            <div class="section-content">
+                <h2 class="section-title">My Resume</h2>
+                <div class="resume-content">
+                    <a href="My_Resume.pdf" class="resume-btn" target="_blank" rel="noopener">
+                        <span>Download Resume</span>
+                        <i class="fas fa-download"></i>
+                    </a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <div class="long-gap"></div> <!-- Space Between Projects & Resume -->
-
-    <!-- Resume Section -->
-    <section id="resume" data-aos="fade-up" data-aos-duration="800">
-        <h2 class="section-title">My Resume</h2>
-        <div class="resume-content" data-aos="fade-up" data-aos-delay="200">
-            <a href="My_Resume.pdf" target="_blank" class="resume-btn">
-                <span>Download Resume</span>
-                <i class="fas fa-download"></i>
-            </a>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <footer id="contact" data-aos="fade-up" data-aos-duration="800">
-        <div class="contact-content">
-            <h2 class="section-title">Get in Touch</h2>
-            <p>Contact: <a href="mailto:suraj.chathiri@gmail.com" class="email-link">suraj.chathiri@gmail.com</a></p>
-        </div>
-    </footer>
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="section-content">
+                <h2 class="section-title">Get in Touch</h2>
+                <div class="contact-content">
+                    <p>Contact: <a href="mailto:suraj.chathiri@gmail.com" class="email-link">suraj.chathiri@gmail.com</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- LinkedIn Button -->
     <a href="https://www.linkedin.com/in/suraj-sagar-chathiri" 
        target="_blank" 
+       rel="noopener"
        class="linkedin-button"
-       data-tippy-content="Connect on LinkedIn">
+       aria-label="LinkedIn Profile">
         <img src="LI-In-Bug.png" alt="LinkedIn">
     </a>
 
-    <script>
-        // Initialize AOS
-        AOS.init({
-            once: true,
-            offset: 100,
-            duration: 800,
-        });
-
-        // Initialize Tippy.js
-        tippy('[data-tippy-content]', {
-            placement: 'bottom',
-            animation: 'scale',
-            duration: 300
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

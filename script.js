@@ -1,56 +1,133 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Function to show section and hide others
-    function showSection(sectionId) {
-        // Hide all sections
-        document.querySelectorAll('section').forEach(section => {
-            section.classList.remove('active');
-        });
+    // Get DOM elements
+    const hamburger = document.querySelector('.hamburger-menu');
+    const navMenu = document.querySelector('.nav-menu');
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    let isMenuOpen = false;
 
-        // Show selected section
-        const targetSection = document.getElementById(sectionId);
-        if (targetSection) {
-            targetSection.classList.add('active');
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+    // Function to show section
+    function showSection(sectionId) {
+        sections.forEach(section => {
+            if (section.id === sectionId) {
+                section.classList.add('active');
+            } else {
+                section.classList.remove('active');
+            }
+        });
+    }
+
+    // Function to toggle mobile menu
+    function toggleMenu(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        isMenuOpen = !isMenuOpen;
+        
+        // Toggle classes with a slight delay for better animation
+        if (isMenuOpen) {
+            hamburger.classList.add('active');
+            navMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Add touch event prevention
+            document.addEventListener('touchmove', preventScroll, { passive: false });
+        } else {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // Remove touch event prevention
+            document.removeEventListener('touchmove', preventScroll);
         }
     }
 
-    // Event listeners for navigation
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', function(e) {
+    // Prevent scroll function
+    function preventScroll(e) {
+        e.preventDefault();
+    }
+
+    // Enhanced close menu function
+    function closeMenu() {
+        if (isMenuOpen) {
+            isMenuOpen = false;
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            document.body.style.overflow = '';
+            document.removeEventListener('touchmove', preventScroll);
+        }
+    }
+
+    // Handle navigation clicks with improved mobile experience
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
             e.preventDefault();
-            const sectionId = this.getAttribute('href').substring(1);
-            showSection(sectionId);
+            e.stopPropagation();
+            const targetId = link.getAttribute('href').substring(1);
             
-            // Close mobile menu if open
-            const hamburger = document.querySelector('.hamburger-menu');
-            const navMenu = document.querySelector('.nav-menu');
-            if (hamburger && navMenu) {
-                hamburger.classList.remove('active');
-                navMenu.classList.remove('active');
+            // Update active section
+            showSection(targetId);
+            
+            // Close mobile menu with slight delay for animation
+            setTimeout(closeMenu, 50);
+
+            // Update active link
+            navLinks.forEach(navLink => navLink.classList.remove('active'));
+            link.classList.add('active');
+
+            // Smooth scroll to section with offset for header
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                const headerOffset = 60;
+                const elementPosition = targetSection.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
             }
+        });
+
+        // Add touch feedback
+        link.addEventListener('touchstart', () => {
+            link.style.opacity = '0.7';
+        });
+
+        link.addEventListener('touchend', () => {
+            link.style.opacity = '1';
         });
     });
 
     // Mobile menu toggle
-    const hamburger = document.querySelector('.hamburger-menu');
-    const navMenu = document.querySelector('.nav-menu');
-
-    if (hamburger && navMenu) {
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
+    if (hamburger) {
+        hamburger.addEventListener('click', toggleMenu);
     }
 
-    // Initialize - show home section by default
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (isMenuOpen && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+            closeMenu();
+        }
+    });
+
+    // Handle touch events for mobile
+    document.addEventListener('touchstart', (e) => {
+        if (isMenuOpen && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+            closeMenu();
+        }
+    });
+
+    // Prevent scrolling when menu is open on mobile
+    navMenu.addEventListener('touchmove', (e) => {
+        if (isMenuOpen) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    // Show home section by default
     showSection('home');
 
-    // Add active class to navigation links based on current section
-    const navLinks = document.querySelectorAll('.nav-link');
-    
+    // Update active link based on current section
     function updateActiveLink() {
         const currentSection = document.querySelector('section.active');
         if (currentSection) {
@@ -64,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Update active link when showing different sections
+    // Observe section changes
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             if (mutation.attributeName === 'class') {
@@ -73,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    document.querySelectorAll('section').forEach(section => {
+    sections.forEach(section => {
         observer.observe(section, { attributes: true });
     });
 });
