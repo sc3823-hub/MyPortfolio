@@ -1,159 +1,176 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Get DOM elements
+    // Get DOM elements with performance optimization
     const hamburger = document.querySelector('.hamburger-menu');
     const navMenu = document.querySelector('.nav-menu');
     const sections = document.querySelectorAll('.section');
     const navLinks = document.querySelectorAll('.nav-link');
+    const header = document.querySelector('header');
     let isMenuOpen = false;
+    let isMobile = window.innerWidth <= 768;
+    let lastScrollTop = 0;
+    let ticking = false;
+    let touchStartY = 0;
+    let touchStartX = 0;
+    let visitedSections = new Set(['home']);
 
-    // Function to show section
-    function showSection(sectionId) {
-        sections.forEach(section => {
-            if (section.id === sectionId) {
-                section.classList.add('active');
-            } else {
-                section.classList.remove('active');
-            }
-        });
+    // Initialize menu state
+    if (!hamburger || !navMenu) {
+        console.error('Menu elements not found');
+        return;
     }
 
-    // Function to toggle mobile menu
+    // Mobile detection
+    window.addEventListener('resize', () => {
+        isMobile = window.innerWidth <= 768;
+    }, { passive: true });
+
+    // Add index to nav items for staggered animation
+    navMenu.querySelectorAll('li').forEach((item, index) => {
+        item.style.setProperty('--i', index + 1);
+    });
+
+    // Simplified menu toggle for mobile
     function toggleMenu(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        isMenuOpen = !isMenuOpen;
-        
-        // Toggle classes with a slight delay for better animation
-        if (isMenuOpen) {
-            hamburger.classList.add('active');
-            navMenu.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            
-            // Add touch event prevention
-            document.addEventListener('touchmove', preventScroll, { passive: false });
-        } else {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-            document.body.style.overflow = '';
-            
-            // Remove touch event prevention
-            document.removeEventListener('touchmove', preventScroll);
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
         }
+        
+        isMenuOpen = !isMenuOpen;
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+        document.body.style.overflow = isMenuOpen ? 'hidden' : '';
     }
 
-    // Prevent scroll function
-    function preventScroll(e) {
-        e.preventDefault();
-    }
-
-    // Enhanced close menu function
     function closeMenu() {
         if (isMenuOpen) {
             isMenuOpen = false;
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
             document.body.style.overflow = '';
-            document.removeEventListener('touchmove', preventScroll);
         }
     }
 
-    // Handle navigation clicks with improved mobile experience
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const targetId = link.getAttribute('href').substring(1);
-            
-            // Update active section
-            showSection(targetId);
-            
-            // Close mobile menu with slight delay for animation
-            setTimeout(closeMenu, 50);
+    // Optimized touch handling
+    document.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+        touchStartX = e.touches[0].clientX;
+    }, { passive: true });
 
-            // Update active link
-            navLinks.forEach(navLink => navLink.classList.remove('active'));
-            link.classList.add('active');
+    document.addEventListener('touchmove', (e) => {
+        if (isMenuOpen) {
+            const touchEndX = e.touches[0].clientX;
+            const touchEndY = e.touches[0].clientY;
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = Math.abs(touchEndY - touchStartY);
 
-            // Smooth scroll to section with offset for header
-            const targetSection = document.getElementById(targetId);
-            if (targetSection) {
-                const headerOffset = 60;
-                const elementPosition = targetSection.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
+            // Only prevent scroll if moving horizontally
+            if (deltaY < Math.abs(deltaX)) {
+                e.preventDefault();
             }
-        });
+        }
+    }, { passive: false });
 
-        // Add touch feedback
-        link.addEventListener('touchstart', () => {
-            link.style.opacity = '0.7';
-        });
+    // Optimized click handlers
+    hamburger.addEventListener('click', toggleMenu, { passive: true });
 
-        link.addEventListener('touchend', () => {
-            link.style.opacity = '1';
-        });
-    });
-
-    // Mobile menu toggle
-    if (hamburger) {
-        hamburger.addEventListener('click', toggleMenu);
-    }
-
-    // Close menu when clicking outside
     document.addEventListener('click', (e) => {
         if (isMenuOpen && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
             closeMenu();
         }
-    });
+    }, { passive: true });
 
-    // Handle touch events for mobile
-    document.addEventListener('touchstart', (e) => {
-        if (isMenuOpen && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
-            closeMenu();
-        }
-    });
-
-    // Prevent scrolling when menu is open on mobile
-    navMenu.addEventListener('touchmove', (e) => {
-        if (isMenuOpen) {
+    // Simplified navigation
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
             e.preventDefault();
-        }
-    }, { passive: false });
+            const targetId = link.getAttribute('href').substring(1);
+            
+            if (isMenuOpen) {
+                closeMenu();
+                // Reduced delay for mobile
+                setTimeout(() => {
+                    scrollToSection(targetId);
+                }, 200);
+            } else {
+                scrollToSection(targetId);
+            }
+        }, { passive: true });
+    });
 
-    // Show home section by default
-    showSection('home');
+    // Optimized scroll handling
+    function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
 
-    // Update active link based on current section
-    function updateActiveLink() {
-        const currentSection = document.querySelector('section.active');
-        if (currentSection) {
-            const currentId = currentSection.id;
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${currentId}`) {
-                    link.classList.add('active');
-                }
+        const offset = isMobile ? 60 : 80;
+        const targetPosition = section.offsetTop - offset;
+
+        if (isMobile) {
+            // Simple scroll for mobile
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
             });
+        } else {
+            // Smooth scroll for desktop
+            smoothScrollTo(targetPosition);
         }
+
+        updateActiveNavLink(sectionId);
     }
 
-    // Observe section changes
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            if (mutation.attributeName === 'class') {
-                updateActiveLink();
+    // Simplified section visibility
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                if (!isMobile) {
+                    const content = entry.target.querySelector('.section-content');
+                    if (content) content.classList.add('visible');
+                }
+                updateActiveNavLink(entry.target.id);
             }
         });
+    }, {
+        threshold: 0.1
     });
 
     sections.forEach(section => {
-        observer.observe(section, { attributes: true });
+        section.classList.add('visible');
+        sectionObserver.observe(section);
     });
+
+    // Simplified active link update
+    function updateActiveNavLink(sectionId) {
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href').substring(1);
+            link.classList.toggle('active', href === sectionId);
+        });
+    }
+
+    // Initialize first section
+    const homeSection = document.getElementById('home');
+    if (homeSection) {
+        homeSection.classList.add('visible');
+        const content = homeSection.querySelector('.section-content');
+        if (content) content.classList.add('visible');
+    }
 });
+
+// Disable parallax effect on mobile
+const isMobile = window.innerWidth <= 768;
+if (!isMobile) {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            requestAnimationFrame(() => {
+                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+            });
+        }
+    }, { passive: true });
+}
 
 // Smooth scroll for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -169,16 +186,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Parallax effect for hero section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-    }
-});
-
-// Intersection Observer for revealing sections
+// Optimized section reveal
 const revealSection = (entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -189,8 +197,7 @@ const revealSection = (entries, observer) => {
 };
 
 const sectionObserver = new IntersectionObserver(revealSection, {
-    root: null,
-    threshold: 0.15,
+    threshold: 0.15
 });
 
 document.querySelectorAll('section').forEach(section => {
@@ -247,3 +254,4 @@ document.querySelectorAll('.project-card').forEach(card => {
         card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
     });
 });
+

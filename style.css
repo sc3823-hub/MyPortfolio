@@ -84,15 +84,22 @@ main {
     padding: 2rem;
     display: none;
     opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.section.active {
-    display: flex;
-    opacity: 1;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    margin: 5rem 0;
+    transition: opacity 0.5s ease;
+}
+
+.section.visible {
+    display: flex;
+    opacity: 1;
+}
+
+#home {
+    display: flex;
+    opacity: 1;
 }
 
 .section-content {
@@ -100,16 +107,33 @@ main {
     width: 100%;
     margin: 0 auto;
     padding: 2rem;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.section-content.visible {
+    transform: translateY(0);
+}
+
+/* Section Spacing */
+.section:not(:first-child).visible {
+    margin-top: 20vh;
+}
+
+/* Section Dividers */
+.section.visible:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: -5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: var(--primary-color);
+    opacity: 0.3;
 }
 
 /* Home Section */
-#home {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
 .hero-content {
     max-width: 800px;
     padding: 2rem;
@@ -188,27 +212,37 @@ main {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: 1rem;
     position: fixed;
-    left: 1rem;
-    top: 1rem;
+    right: 1rem;
+    top: 0.5rem;
     z-index: 2000;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     transition: transform 0.3s ease;
-}
-
-.hamburger-menu:active {
-    transform: scale(0.95);
+    -webkit-tap-highlight-color: transparent;
 }
 
 .hamburger-menu span {
     display: block;
-    width: 25px;
+    width: 24px;
     height: 2px;
     background-color: var(--text-light);
-    margin: 5px auto;
-    transition: all 0.3s ease-in-out;
+    margin: 6px auto;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hamburger-menu.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.hamburger-menu.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
 }
 
 /* LinkedIn Button */
@@ -238,102 +272,142 @@ main {
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    .hamburger-menu {
-        display: block;
+    /* Performance Optimizations */
+    * {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
     }
 
+    /* Simplified Mobile Menu */
+    .hamburger-menu {
+        display: block;
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        width: 44px;
+        height: 44px;
+        padding: 10px;
+        z-index: 2000;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        touch-action: manipulation;
+    }
+
+    .hamburger-menu span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        margin: 5px 0;
+        background-color: var(--text-light);
+        transition: transform 0.2s ease-out;
+    }
+
+    /* Optimized Mobile Navigation */
     .nav-menu {
         position: fixed;
         top: 0;
-        left: -100%;
+        right: -100%;
         width: 100%;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.95);
-        padding-top: 80px;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+        background: var(--background-dark);
         z-index: 1500;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        transition: transform 0.3s ease-out;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        transform: translateX(100%);
     }
 
     .nav-menu.active {
-        left: 0;
+        transform: translateX(-100%);
     }
 
     .nav-menu ul {
+        display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 2.5rem;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: all 0.3s ease;
+        padding: 80px 0 20px;
+        height: 100%;
+        opacity: 1;
+        transform: none;
     }
 
-    .nav-menu.active ul {
+    .nav-menu ul li {
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
         opacity: 1;
-        transform: translateY(0);
+        transform: none;
     }
 
     .nav-link {
         display: block;
-        padding: 1rem 2rem;
-        font-size: 1.4rem;
+        padding: 15px;
+        font-size: 1.2rem;
         width: 100%;
         text-align: center;
-        position: relative;
-        overflow: hidden;
     }
 
-    .nav-link::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 0;
-        height: 2px;
-        background: var(--primary-color);
-        transition: all 0.3s ease;
-        transform: translateX(-50%);
-    }
-
-    .nav-link:hover::after,
-    .nav-link.active::after {
-        width: 80%;
-    }
-
-    /* Improve section transitions */
+    /* Optimized Sections */
     .section {
-        padding: 1.5rem;
-        padding-top: 90px;
-        transition: opacity 0.4s ease, transform 0.4s ease;
-        transform: translateY(20px);
+        min-height: 100vh;
+        padding: 20px;
+        opacity: 1;
+        transform: none;
+        will-change: auto;
     }
 
-    .section.active {
-        transform: translateY(0);
+    .section.visible {
+        opacity: 1;
+        transform: none;
     }
 
-    /* Better touch feedback */
+    .section-content {
+        padding: 15px;
+        opacity: 1;
+        transform: none;
+        will-change: auto;
+    }
+
+    .section-content.visible {
+        opacity: 1;
+        transform: none;
+    }
+
+    /* Simplified Project Cards */
     .project-card {
-        -webkit-tap-highlight-color: transparent;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transform: none !important;
+        transition: none !important;
+        will-change: auto;
     }
 
     .project-card:active {
-        transform: scale(0.98);
+        background: rgba(255, 255, 255, 0.15);
     }
 
-    /* Adjust LinkedIn button position for mobile */
-    .linkedin-button {
-        bottom: 1rem;
-        left: 1rem;
-        width: 40px;
-        height: 40px;
+    /* Optimized Buttons */
+    .download-btn, .resume-btn {
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 0.2s ease-out;
     }
 
-    .linkedin-button img {
-        width: 20px;
-        height: 20px;
+    .download-btn:active, .resume-btn:active {
+        background: #0099cc;
+    }
+
+    /* Disable Parallax on Mobile */
+    body {
+        background-attachment: scroll;
+    }
+
+    /* Optimize Header */
+    header {
+        transform: none !important;
+        will-change: auto;
     }
 }
 
