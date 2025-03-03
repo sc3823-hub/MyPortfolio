@@ -187,24 +187,48 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        const offset = isMobile ? 60 : 80;
-        const targetPosition = section.offsetTop - offset;
+        const headerHeight = document.querySelector('header').offsetHeight;
+        const windowHeight = window.innerHeight;
+        const sectionHeight = section.offsetHeight;
+        let targetPosition;
 
-        // Optimized smooth scroll with reduced duration
+        // Calculate position to center the section
+        if (sectionHeight <= windowHeight - headerHeight) {
+            // If section fits in viewport, center it
+            targetPosition = section.offsetTop - ((windowHeight - sectionHeight) / 2);
+        } else {
+            // If section is taller, align to top with header offset
+            targetPosition = section.offsetTop - headerHeight;
+        }
+
+        // Ensure we don't scroll past the top
+        targetPosition = Math.max(0, targetPosition);
+
+        // Optimized smooth scroll
         if (isMobile) {
             window.scrollTo({
                 top: targetPosition,
                 behavior: 'smooth'
             });
         } else {
-            smoothScrollTo(targetPosition, 400); // Reduced duration
+            smoothScrollTo(targetPosition, 600); // Increased duration for smoother feel
         }
 
-        updateActiveNavLink(sectionId);
+        // Update active state after scroll
+        setTimeout(() => {
+            updateActiveNavLink(sectionId);
+            
+            // Ensure content is visible and centered
+            const content = section.querySelector('.section-content');
+            if (content) {
+                content.style.opacity = '1';
+                content.style.transform = 'translateY(0)';
+            }
+        }, 100);
     }
 
-    // Optimized smooth scroll with configurable duration
-    function smoothScrollTo(targetPosition, duration = 400) {
+    // Optimized smooth scroll with improved easing
+    function smoothScrollTo(targetPosition, duration = 600) {
         const startPosition = window.pageYOffset;
         const distance = targetPosition - startPosition;
         let start = null;
@@ -214,8 +238,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const timeElapsed = currentTime - start;
             const progress = Math.min(timeElapsed / duration, 1);
 
-            // Optimized easing function
-            const ease = t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            // Improved easing function for smoother motion
+            const ease = t => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
             const position = startPosition + distance * ease(progress);
 
             window.scrollTo(0, position);
@@ -228,19 +252,39 @@ document.addEventListener("DOMContentLoaded", function () {
         requestAnimationFrame(animation);
     }
 
-    // Optimized section observer with better timing
+    // Optimized section observer
     const sectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const section = entry.target;
+                const content = section.querySelector('.section-content');
+                
                 // Use double RAF for smoother animation
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
                         section.classList.add('visible');
-                        const content = section.querySelector('.section-content');
+                        
                         if (content) {
+                            // Add small delay for sequential animation
                             setTimeout(() => {
                                 content.classList.add('visible');
+                                
+                                // Center content if needed
+                                if (entry.intersectionRatio > 0.7) {
+                                    const rect = content.getBoundingClientRect();
+                                    const windowHeight = window.innerHeight;
+                                    const headerHeight = document.querySelector('header').offsetHeight;
+                                    
+                                    if (rect.height < windowHeight - headerHeight) {
+                                        const offset = (windowHeight - rect.height) / 2 - headerHeight;
+                                        if (Math.abs(rect.top - offset) > 10) {
+                                            window.scrollBy({
+                                                top: rect.top - offset,
+                                                behavior: 'smooth'
+                                            });
+                                        }
+                                    }
+                                }
                             }, 50);
                         }
                     });
@@ -248,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }, {
-        threshold: 0.15,
+        threshold: [0.3, 0.7],
         rootMargin: '-5% 0px -5% 0px'
     });
 
