@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
         homeSection.style.display = 'flex';
         requestAnimationFrame(() => {
             homeSection.classList.add('visible');
+            const homeContent = homeSection.querySelector('.section-content');
+            if (homeContent) homeContent.classList.add('visible');
         });
     }
 
@@ -49,13 +51,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 const scrollDelta = Math.abs(currentScroll - lastScrollTop);
                 
                 if (scrollDelta > 30) {
-                    const headerTransform = currentScroll > lastScrollTop ? 
+                    header.style.transform = currentScroll > lastScrollTop ? 
                         'translateY(-100%)' : 'translateY(0)';
-                    
-                    requestAnimationFrame(() => {
-                        header.style.transform = headerTransform;
-                    });
-                    
                     lastScrollTop = currentScroll;
                 }
                 ticking = false;
@@ -65,9 +62,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Enhanced smooth scroll
-    function smoothScrollTo(targetPosition, duration = 600) {
-        const start = window.pageYOffset;
-        const distance = targetPosition - start;
+    function smoothScrollTo(targetPosition) {
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        const duration = 600;
         const startTime = performance.now();
 
         function easeOutCubic(t) {
@@ -75,11 +73,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         function scroll(currentTime) {
-            const timeElapsed = currentTime - startTime;
-            const progress = Math.min(timeElapsed / duration, 1);
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
             const easing = easeOutCubic(progress);
             
-            window.scrollTo(0, start + (distance * easing));
+            window.scrollTo(0, startPosition + (distance * easing));
 
             if (progress < 1) {
                 requestAnimationFrame(scroll);
@@ -89,30 +87,33 @@ document.addEventListener("DOMContentLoaded", function () {
         requestAnimationFrame(scroll);
     }
 
-    // Improved section reveal
+    // Show section with smooth transition
     function showSection(sectionId) {
         const section = document.getElementById(sectionId);
-        if (!section || visibleSections.has(sectionId)) return;
+        if (!section) return;
 
-        visibleSections.add(sectionId);
-        
-        // Pre-display section
+        // Show target section
         section.style.display = 'flex';
-        section.style.opacity = '0';
         
-        // Trigger smooth reveal
+        // Trigger reflow
+        section.offsetHeight;
+
+        // Add visible class after brief delay
         requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                section.classList.add('visible');
-                const offset = section.offsetTop - 60;
-                smoothScrollTo(offset);
-            });
+            section.classList.add('visible');
+            const content = section.querySelector('.section-content');
+            if (content) content.classList.add('visible');
         });
 
+        // Smooth scroll to section
+        const offset = section.offsetTop - 60;
+        smoothScrollTo(offset);
+
+        // Update active state
         updateActiveNavLink(sectionId);
     }
 
-    // Enhanced menu toggle with precise timing
+    // Toggle menu with animations
     function toggleMenu() {
         isMenuOpen = !isMenuOpen;
         
@@ -123,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 navMenu.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 
-                // Animate menu items
+                // Staggered animation for menu items
                 navMenu.querySelectorAll('li').forEach((item, index) => {
                     setTimeout(() => {
                         item.style.opacity = '1';
@@ -142,20 +143,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 item.style.transform = 'translateX(-20px)';
             });
             
-            // Hide menu after transition
             setTimeout(() => {
-                if (!isMenuOpen) {
-                    navMenu.style.display = 'none';
-                }
+                if (!isMenuOpen) navMenu.style.display = 'none';
             }, 400);
         }
     }
 
-    // Optimized event listeners
-    hamburger?.addEventListener('click', toggleMenu);
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    // Enhanced navigation handling
+    // Navigation click handler
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -170,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Update active link
+    // Update active navigation link
     function updateActiveNavLink(sectionId) {
         navLinks.forEach(link => {
             const href = link.getAttribute('href').substring(1);
@@ -183,13 +177,16 @@ document.addEventListener("DOMContentLoaded", function () {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const target = entry.target;
+                const content = target.querySelector('.section-content');
+                
                 requestAnimationFrame(() => {
                     target.classList.add('visible');
+                    if (content) content.classList.add('visible');
                 });
             }
         });
     }, {
-        threshold: 0.15,
+        threshold: 0.2,
         rootMargin: '-20px'
     });
 
