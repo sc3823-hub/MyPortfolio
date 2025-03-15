@@ -229,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 50);
     }
 
-    // Optimized smooth scroll with improved easing
+    // Optimized smooth scroll with enhanced easing
     function smoothScrollTo(targetPosition, duration = 800) {
         const startPosition = window.pageYOffset;
         const distance = targetPosition - startPosition;
@@ -240,8 +240,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const timeElapsed = currentTime - start;
             const progress = Math.min(timeElapsed / duration, 1);
 
-            // Improved easing function for smoother motion
-            const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            // Enhanced easing function
+            const ease = t => t < 0.5 
+                ? 4 * t * t * t 
+                : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            
             const position = startPosition + distance * ease(progress);
 
             window.scrollTo(0, position);
@@ -364,11 +367,29 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Optimized section reveal
+// Enhanced section reveal with staggered animations
 const revealSection = (entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+            const section = entry.target;
+            const content = section.querySelector('.section-content');
+            const elements = content.children;
+            
+            // Animate section
+            section.classList.add('visible');
+            
+            // Staggered animation for children
+            Array.from(elements).forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    el.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 100 * (index + 1));
+            });
+            
             observer.unobserve(entry.target);
         }
     });
@@ -412,7 +433,7 @@ if (typingText) {
     typingObserver.observe(typingText);
 }
 
-// Project cards hover effect
+// Project cards enhanced hover effect
 document.querySelectorAll('.project-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
@@ -422,14 +443,64 @@ document.querySelectorAll('.project-card').forEach(card => {
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
 
-        const rotateX = (y - centerY) / 20;
-        const rotateY = (centerX - x) / 20;
+        const rotateX = (y - centerY) / 30;
+        const rotateY = (centerX - x) / 30;
 
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+        card.style.transform = `
+            perspective(1000px) 
+            rotateX(${rotateX}deg) 
+            rotateY(${rotateY}deg) 
+            scale3d(1.02, 1.02, 1.02)
+        `;
+
+        // Dynamic shadow
+        const shadowX = (x - centerX) / 20;
+        const shadowY = (y - centerY) / 20;
+        card.style.boxShadow = `
+            ${shadowX}px ${shadowY}px 30px rgba(0, 0, 0, 0.2)
+        `;
     });
 
     card.addEventListener('mouseleave', () => {
         card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        card.style.boxShadow = 'none';
     });
+});
+
+// Enhanced navigation hover effect
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('mouseenter', () => {
+        link.style.transform = 'translateY(-2px)';
+        link.style.color = 'var(--primary-color)';
+    });
+
+    link.addEventListener('mouseleave', () => {
+        link.style.transform = 'translateY(0)';
+        link.style.color = '';
+    });
+});
+
+// Animate sections on scroll
+const animateOnScroll = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            
+            // Animate children with delay
+            const children = entry.target.querySelectorAll('.animate-on-scroll');
+            children.forEach((child, index) => {
+                setTimeout(() => {
+                    child.classList.add('visible');
+                }, 200 * index);
+            });
+        }
+    });
+}, {
+    threshold: 0.2,
+    rootMargin: '-50px'
+});
+
+document.querySelectorAll('.section').forEach(section => {
+    animateOnScroll.observe(section);
 });
 
