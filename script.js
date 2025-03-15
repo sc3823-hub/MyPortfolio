@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Get DOM elements with performance optimization
+    // Performance optimized variables
     const hamburger = document.querySelector('.hamburger-menu');
     const navMenu = document.querySelector('.nav-menu');
     const sections = document.querySelectorAll('.section');
@@ -12,6 +12,17 @@ document.addEventListener("DOMContentLoaded", function () {
     let touchStartY = 0;
     let touchStartX = 0;
     let visitedSections = new Set(['home']);
+    let scrollTimeout;
+
+    // Initialize sections with improved timing
+    const visibleSections = new Set(['home']);
+    const homeSection = document.getElementById('home');
+    if (homeSection) {
+        homeSection.style.display = 'flex';
+        requestAnimationFrame(() => {
+            homeSection.classList.add('visible');
+        });
+    }
 
     // Initialize menu state
     if (!hamburger || !navMenu) {
@@ -29,124 +40,22 @@ document.addEventListener("DOMContentLoaded", function () {
         item.style.setProperty('--i', index + 1);
     });
 
-    // Toggle menu function
-    function toggleMenu() {
-        isMenuOpen = !isMenuOpen;
-        hamburger.classList.toggle('active');
-        
-        if (isMenuOpen) {
-            navMenu.style.display = 'block';
-            // Small delay to ensure display: block takes effect
-            setTimeout(() => {
-                navMenu.classList.add('active');
-                // Animate menu items
-                const menuItems = navMenu.querySelectorAll('li');
-                menuItems.forEach((item, index) => {
-                    setTimeout(() => {
-                        item.style.opacity = '1';
-                        item.style.transform = 'translateY(0)';
-                    }, 100 + (index * 100));
-                });
-            }, 10);
-        } else {
-            navMenu.classList.remove('active');
-            // Reset menu items
-            const menuItems = navMenu.querySelectorAll('li');
-            menuItems.forEach(item => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-            });
-            // Wait for transition to complete before hiding menu
-            setTimeout(() => {
-                if (!isMenuOpen) { // Double check menu is still closed
-                    navMenu.style.display = 'none';
-                }
-            }, 300);
-        }
-
-        document.body.style.overflow = isMenuOpen ? 'hidden' : '';
-    }
-
-    // Close menu function
-    function closeMenu() {
-        if (isMenuOpen) {
-            isMenuOpen = false;
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-            
-            // Reset menu items
-            const menuItems = navMenu.querySelectorAll('li');
-            menuItems.forEach(item => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-            });
-
-            // Wait for transition to complete before hiding menu
-            setTimeout(() => {
-                if (!isMenuOpen) { // Double check menu is still closed
-                    navMenu.style.display = 'none';
-                }
-            }, 300);
-
-            document.body.style.overflow = '';
-        }
-    }
-
-    // Optimized touch handling
-    document.addEventListener('touchstart', (e) => {
-        touchStartY = e.touches[0].clientY;
-        touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-
-    document.addEventListener('touchmove', (e) => {
-        if (isMenuOpen) {
-            const touchEndX = e.touches[0].clientX;
-            const touchEndY = e.touches[0].clientY;
-            const deltaX = touchEndX - touchStartX;
-            const deltaY = Math.abs(touchEndY - touchStartY);
-
-            // Only prevent scroll if moving horizontally
-            if (deltaY < Math.abs(deltaX)) {
-                e.preventDefault();
-            }
-        }
-    }, { passive: false });
-
-    // Event Listeners
-    hamburger.addEventListener('click', toggleMenu);
-
-    document.addEventListener('click', (e) => {
-        if (isMenuOpen && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
-            closeMenu();
-        }
-    });
-
-    // Navigation click handler
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = link.getAttribute('href').substring(1);
-            
-            if (isMenuOpen) {
-                closeMenu();
-                setTimeout(() => {
-                    showSection(targetId);
-                    updateActiveNavLink(targetId);
-                }, 300);
-            } else {
-                showSection(targetId);
-                updateActiveNavLink(targetId);
-            }
-        });
-    });
-
-    // Scroll handler
+    // Optimized scroll handler with debounce
     function onScroll() {
         if (!ticking) {
-            requestAnimationFrame(() => {
+            cancelAnimationFrame(scrollTimeout);
+            scrollTimeout = requestAnimationFrame(() => {
                 const currentScroll = window.pageYOffset;
-                if (Math.abs(currentScroll - lastScrollTop) > 30) {
-                    handleScroll(currentScroll);
+                const scrollDelta = Math.abs(currentScroll - lastScrollTop);
+                
+                if (scrollDelta > 30) {
+                    const headerTransform = currentScroll > lastScrollTop ? 
+                        'translateY(-100%)' : 'translateY(0)';
+                    
+                    requestAnimationFrame(() => {
+                        header.style.transform = headerTransform;
+                    });
+                    
                     lastScrollTop = currentScroll;
                 }
                 ticking = false;
@@ -155,153 +64,111 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function handleScroll(scrollPos) {
-        if (!isMenuOpen) {
-            if (scrollPos > lastScrollTop && scrollPos > 100) {
-                header.style.transform = 'translateY(-100%)';
-            } else {
-                header.style.transform = 'translateY(0)';
+    // Enhanced smooth scroll
+    function smoothScrollTo(targetPosition, duration = 600) {
+        const start = window.pageYOffset;
+        const distance = targetPosition - start;
+        const startTime = performance.now();
+
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+
+        function scroll(currentTime) {
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / duration, 1);
+            const easing = easeOutCubic(progress);
+            
+            window.scrollTo(0, start + (distance * easing));
+
+            if (progress < 1) {
+                requestAnimationFrame(scroll);
             }
         }
+
+        requestAnimationFrame(scroll);
     }
 
-    // Show section with optimized performance
+    // Improved section reveal
     function showSection(sectionId) {
         const section = document.getElementById(sectionId);
-        if (!section) return;
+        if (!section || visibleSections.has(sectionId)) return;
 
-        // Pre-load next section with optimized timing
-        if (!visitedSections.has(sectionId)) {
-            visitedSections.add(sectionId);
-            section.style.display = 'flex';
-            
-            // Use double RAF for smoother animation
+        visibleSections.add(sectionId);
+        
+        // Pre-display section
+        section.style.display = 'flex';
+        section.style.opacity = '0';
+        
+        // Trigger smooth reveal
+        requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    section.classList.add('visible');
-                    const content = section.querySelector('.section-content');
-                    if (content) {
-                        content.classList.add('visible');
-                    }
-                });
+                section.classList.add('visible');
+                const offset = section.offsetTop - 60;
+                smoothScrollTo(offset);
             });
-        }
+        });
 
-        const headerHeight = document.querySelector('header').offsetHeight;
-        const windowHeight = window.innerHeight;
-        const sectionHeight = section.offsetHeight;
-        let targetPosition;
-
-        // Calculate position to center the section
-        if (sectionHeight <= windowHeight - headerHeight) {
-            // If section fits in viewport, center it perfectly
-            targetPosition = section.offsetTop - ((windowHeight - sectionHeight) / 2) + (headerHeight / 2);
-        } else {
-            // If section is taller, align to top with header offset
-            targetPosition = section.offsetTop - headerHeight;
-        }
-
-        // Ensure we don't scroll past the top
-        targetPosition = Math.max(0, targetPosition);
-
-        // Optimized smooth scroll
-        if (isMobile) {
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-        } else {
-            smoothScrollTo(targetPosition, 800); // Increased duration for smoother feel
-        }
-
-        // Update active state after scroll
-        setTimeout(() => {
-            updateActiveNavLink(sectionId);
-            
-            // Ensure content is visible and centered
-            const content = section.querySelector('.section-content');
-            if (content) {
-                requestAnimationFrame(() => {
-                    content.style.opacity = '1';
-                    content.style.transform = 'translateY(0)';
-                });
-            }
-        }, 50);
+        updateActiveNavLink(sectionId);
     }
 
-    // Optimized smooth scroll with enhanced easing
-    function smoothScrollTo(targetPosition, duration = 800) {
-        const startPosition = window.pageYOffset;
-        const distance = targetPosition - startPosition;
-        let start = null;
-
-        function animation(currentTime) {
-            if (start === null) start = currentTime;
-            const timeElapsed = currentTime - start;
-            const progress = Math.min(timeElapsed / duration, 1);
-
-            // Enhanced easing function
-            const ease = t => t < 0.5 
-                ? 4 * t * t * t 
-                : 1 - Math.pow(-2 * t + 2, 3) / 2;
-            
-            const position = startPosition + distance * ease(progress);
-
-            window.scrollTo(0, position);
-
-            if (timeElapsed < duration) {
-                requestAnimationFrame(animation);
-            }
-        }
-
-        requestAnimationFrame(animation);
-    }
-
-    // Optimized section observer
-    const sectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const section = entry.target;
-                const content = section.querySelector('.section-content');
+    // Enhanced menu toggle with precise timing
+    function toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+        
+        if (isMenuOpen) {
+            navMenu.style.display = 'block';
+            requestAnimationFrame(() => {
+                hamburger.classList.add('active');
+                navMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
                 
-                // Use double RAF for smoother animation
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        section.classList.add('visible');
-                        
-                        if (content) {
-                            // Add small delay for sequential animation
-                            setTimeout(() => {
-                                content.classList.add('visible');
-                                
-                                // Center content if needed
-                                if (entry.intersectionRatio > 0.8) {
-                                    const rect = content.getBoundingClientRect();
-                                    const windowHeight = window.innerHeight;
-                                    const headerHeight = document.querySelector('header').offsetHeight;
-                                    
-                                    if (rect.height < windowHeight - headerHeight) {
-                                        const offset = (windowHeight - rect.height) / 2;
-                                        if (Math.abs(rect.top - offset) > 5) {
-                                            window.scrollBy({
-                                                top: rect.top - offset,
-                                                behavior: 'smooth'
-                                            });
-                                        }
-                                    }
-                                }
-                            }, 30);
-                        }
-                    });
+                // Animate menu items
+                navMenu.querySelectorAll('li').forEach((item, index) => {
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateX(0)';
+                    }, 50 * (index + 1));
                 });
+            });
+        } else {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // Reset menu items
+            navMenu.querySelectorAll('li').forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+            });
+            
+            // Hide menu after transition
+            setTimeout(() => {
+                if (!isMenuOpen) {
+                    navMenu.style.display = 'none';
+                }
+            }, 400);
+        }
+    }
+
+    // Optimized event listeners
+    hamburger?.addEventListener('click', toggleMenu);
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Enhanced navigation handling
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            
+            if (isMenuOpen) {
+                toggleMenu();
+                setTimeout(() => showSection(targetId), 400);
+            } else {
+                showSection(targetId);
             }
         });
-    }, {
-        threshold: [0.5, 0.8],
-        rootMargin: '-2% 0px -2% 0px'
     });
-
-    sections.forEach(section => sectionObserver.observe(section));
 
     // Update active link
     function updateActiveNavLink(sectionId) {
@@ -311,17 +178,29 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Initialize first section
-    const homeSection = document.getElementById('home');
-    if (homeSection) {
-        homeSection.classList.add('visible');
-        if (homeSection.querySelector('.section-content')) {
-            homeSection.querySelector('.section-content').classList.add('visible');
-        }
-    }
+    // Optimized intersection observer
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = entry.target;
+                requestAnimationFrame(() => {
+                    target.classList.add('visible');
+                });
+            }
+        });
+    }, {
+        threshold: 0.15,
+        rootMargin: '-20px'
+    });
 
-    // Add scroll event listener
-    window.addEventListener('scroll', onScroll, { passive: true });
+    sections.forEach(section => observer.observe(section));
+
+    // Clean up function
+    window.addEventListener('unload', () => {
+        window.removeEventListener('scroll', onScroll);
+        observer.disconnect();
+        cancelAnimationFrame(scrollTimeout);
+    });
 
     // Preload background image
     window.addEventListener('load', () => {
@@ -330,12 +209,6 @@ document.addEventListener("DOMContentLoaded", function () {
         img.onload = () => {
             document.body.classList.add('bg-loaded');
         };
-    });
-
-    // Clean up event listeners when navigating away
-    window.addEventListener('unload', () => {
-        window.removeEventListener('scroll', onScroll);
-        sectionObserver.disconnect();
     });
 });
 
