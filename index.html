@@ -60,7 +60,7 @@ programming (Python, SQL), and business analytics.</span>
 <p>Comprehensive overview of Big Data analytics and visualization techniques, showcasing modern data processing methodologies.</p>
 <div class="project-buttons">
 <a href="Big_Data_Presentation.pptx" class="download-btn" download>Download</a>
-<button class="view-details-btn">View Details</button>
+<button class="view-details-btn" onclick="openModal('bigdata-modal')">View Details</button>
 </div>
 </div>
 <div class="project-card">
@@ -68,7 +68,7 @@ programming (Python, SQL), and business analytics.</span>
 <p>In-depth analysis and visualization of obesity risk factors using Excel & Tableau, with interactive dashboards.</p>
 <div class="project-buttons">
 <a href="Obesity Risk Analysis and Visualization Using Excel & Tableau.zip" class="download-btn" download>Download</a>
-<button class="view-details-btn">View Details</button>
+<button class="view-details-btn" onclick="openModal('obesity-modal')">View Details</button>
 </div>
 </div>
 <div class="project-card">
@@ -76,12 +76,84 @@ programming (Python, SQL), and business analytics.</span>
 <p>Technical implementation including Python analysis, Excel data processing, and comprehensive reporting.</p>
 <div class="project-buttons">
 <a href="Bike Share Data.zip" class="download-btn" download>Download</a>
-<button class="view-details-btn">View Details</button>
+<button class="view-details-btn" onclick="openModal('bikeshare-modal')">View Details</button>
 </div>
 </div>
 </div>
 </div>
 </section>
+
+<!-- Project Modals -->
+<div id="bigdata-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('bigdata-modal')">&times;</span>
+        <h2>Big Data Presentation</h2>
+        <div class="modal-body">
+            <h3>Files Included:</h3>
+            <ul>
+                <li>Big_Data_Presentation.pptx - Main presentation file</li>
+                <li>Data visualization examples</li>
+                <li>Analytics methodology documentation</li>
+            </ul>
+            <h3>Description:</h3>
+            <p>A comprehensive presentation on Big Data analytics covering:</p>
+            <ul>
+                <li>Modern data processing techniques</li>
+                <li>Visualization methodologies</li>
+                <li>Real-world applications</li>
+                <li>Best practices and case studies</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="obesity-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('obesity-modal')">&times;</span>
+        <h2>Obesity Risk Analysis</h2>
+        <div class="modal-body">
+            <h3>Files Included:</h3>
+            <ul>
+                <li>Excel analysis files</li>
+                <li>Tableau workbooks and dashboards</li>
+                <li>Data visualization exports</li>
+                <li>Documentation and methodology</li>
+            </ul>
+            <h3>Description:</h3>
+            <p>Complete analysis of obesity risk factors including:</p>
+            <ul>
+                <li>Interactive Tableau dashboards</li>
+                <li>Statistical analysis in Excel</li>
+                <li>Visualization of key findings</li>
+                <li>Detailed methodology report</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="bikeshare-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('bikeshare-modal')">&times;</span>
+        <h2>Bike Share Data Analysis</h2>
+        <div class="modal-body">
+            <h3>Files Included:</h3>
+            <ul>
+                <li>Python analysis scripts</li>
+                <li>Excel data processing files</li>
+                <li>Final report and documentation</li>
+                <li>Data visualization outputs</li>
+            </ul>
+            <h3>Description:</h3>
+            <p>Comprehensive bike share data analysis including:</p>
+            <ul>
+                <li>Python-based data processing</li>
+                <li>Excel analysis and visualization</li>
+                <li>Detailed findings report</li>
+                <li>Implementation recommendations</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <!-- Resume Section -->
 <section id="resume" class="section">

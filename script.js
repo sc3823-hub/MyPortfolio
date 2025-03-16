@@ -374,3 +374,35 @@ document.querySelectorAll('.section').forEach(section => {
     animateOnScroll.observe(section);
 });
 
+// Modal functionality
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = 'block';
+    // Add active class after a small delay to trigger animation
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
+
+    // Close modal when clicking outside
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal(modalId);
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.style.display === 'block') {
+            closeModal(modalId);
+        }
+    });
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.classList.remove('active');
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300); // Match the transition duration
+}
+
