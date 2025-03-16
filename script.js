@@ -87,82 +87,70 @@ document.addEventListener("DOMContentLoaded", function () {
         requestAnimationFrame(scroll);
     }
 
-    // Show section with smooth transition
+    // Function to show section
     function showSection(sectionId) {
+        // First hide all sections
         sections.forEach(section => {
-            if (section.id === sectionId) {
-                section.classList.add('visible');
-                section.style.display = 'flex';
-            } else {
-                section.classList.remove('visible');
-                section.style.display = 'none';
-            }
+            section.style.display = 'none';
+            section.classList.remove('visible');
         });
 
-        // Update active nav link
-        navLinks.forEach(link => {
-            if (link.getAttribute('href') === `#${sectionId}`) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
-        });
-    }
-
-    // Toggle menu with animations
-    function toggleMenu() {
-        isMenuOpen = !isMenuOpen;
-        
-        if (isMenuOpen) {
-            navMenu.style.display = 'block';
-            requestAnimationFrame(() => {
-                hamburger.classList.add('active');
-                navMenu.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                
-                // Staggered animation for menu items
-                navMenu.querySelectorAll('li').forEach((item, index) => {
-                    setTimeout(() => {
-                        item.style.opacity = '1';
-                        item.style.transform = 'translateX(0)';
-                    }, 50 * (index + 1));
-                });
-            });
-        } else {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-            document.body.style.overflow = '';
-            
-            // Reset menu items
-            navMenu.querySelectorAll('li').forEach(item => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateX(-20px)';
-            });
-            
+        // Show the target section
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.style.display = 'flex';
+            // Use setTimeout to ensure the display change takes effect before adding the visible class
             setTimeout(() => {
-                if (!isMenuOpen) navMenu.style.display = 'none';
-            }, 400);
+                targetSection.classList.add('visible');
+            }, 10);
+
+            // Update active navigation link
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
         }
     }
 
-    // Navigation click handler
+    // Handle navigation clicks
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            const targetId = link.getAttribute('href').substring(1);
-            showSection(targetId);
+            const sectionId = link.getAttribute('href').substring(1);
+            showSection(sectionId);
+
+            // Close mobile menu if screen width <= 768px
             if (window.innerWidth <= 768) {
                 navMenu.classList.remove('active');
                 hamburger.classList.remove('active');
             }
+
+            // Update URL hash without scrolling
+            history.pushState(null, '', `#${sectionId}`);
         });
     });
 
-    // Show section based on hash URL if present
-    if (window.location.hash) {
+    // Handle mobile menu toggle
+    if (hamburger) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+    }
+
+    // Show initial section based on hash or default to home
+    const initialSection = window.location.hash ? 
+        window.location.hash.substring(1) : 'home';
+    showSection(initialSection);
+
+    // Handle hash change
+    window.addEventListener('hashchange', () => {
         const sectionId = window.location.hash.substring(1);
         showSection(sectionId);
-    }
+    });
 
     // Optimized intersection observer
     const observer = new IntersectionObserver((entries) => {
@@ -367,34 +355,55 @@ document.querySelectorAll('.section').forEach(section => {
 });
 
 // Modal functionality
-function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    modal.style.display = 'block';
-    // Add active class after a small delay to trigger animation
-    setTimeout(() => {
-        modal.classList.add('active');
-    }, 10);
+const modal = document.getElementById('projectModal');
+const closeModal = document.querySelector('.close-modal');
+const fileList = document.querySelector('.file-list');
 
-    // Close modal when clicking outside
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeModal(modalId);
-        }
-    });
-
-    // Close modal with Escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.style.display === 'block') {
-            closeModal(modalId);
-        }
-    });
+// Close modal when clicking the close button or outside the modal
+if (closeModal) {
+    closeModal.onclick = () => modal.style.display = "none";
 }
 
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    modal.classList.remove('active');
-    setTimeout(() => {
-        modal.style.display = 'none';
-    }, 300); // Match the transition duration
+window.onclick = (event) => {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 
+// Function to display files for a project
+async function showProjectFiles(projectName, folderPath) {
+    modal.style.display = "block";
+    document.querySelector('.modal-title').textContent = projectName;
+    
+    try {
+        // For demonstration, show static file list
+        const files = [
+            { name: 'Presentation.pptx', path: `${folderPath}/presentation.pptx` },
+            { name: 'Data Analysis.xlsx', path: `${folderPath}/analysis.xlsx` },
+            { name: 'Documentation.pdf', path: `${folderPath}/docs.pdf` }
+        ];
+        
+        // Display the files
+        fileList.innerHTML = files.map(file => `
+            <div class="file-item">
+                <i class="fas fa-file"></i>
+                <span>${file.name}</span>
+                <a href="${file.path}" class="file-download" download>
+                    <i class="fas fa-download"></i>
+                </a>
+            </div>
+        `).join('');
+    } catch (error) {
+        fileList.innerHTML = '<p>Error loading files. Please try again later.</p>';
+    }
+}
+
+// Update all view details buttons
+document.querySelectorAll('.view-details-btn').forEach(button => {
+    button.onclick = () => {
+        const projectCard = button.closest('.project-card');
+        const projectName = projectCard.querySelector('h3').textContent;
+        const folderPath = button.getAttribute('data-folder');
+        showProjectFiles(projectName, folderPath);
+    }
+});
