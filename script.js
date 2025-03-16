@@ -89,15 +89,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to show section
     function showSection(sectionId) {
-        console.log('Showing section:', sectionId); // Debug log
-
-        // Hide all sections
+        // First hide all sections and remove active classes
         sections.forEach(section => {
             section.style.display = 'none';
-            section.classList.remove('visible');
+            section.classList.remove('visible', 'active');
         });
 
-        // Remove active class from all links
         navLinks.forEach(link => {
             link.classList.remove('active');
         });
@@ -108,7 +105,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (targetSection) {
             targetSection.style.display = 'flex';
-            targetSection.classList.add('visible');
+            setTimeout(() => {
+                targetSection.classList.add('visible', 'active');
+            }, 10);
         }
 
         if (targetLink) {
@@ -118,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Close mobile menu if open
         if (window.innerWidth <= 768) {
             navMenu.classList.remove('active');
-            if (hamburger) hamburger.classList.remove('active');
+            hamburger.classList.remove('active');
         }
     }
 
@@ -127,7 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const sectionId = link.getAttribute('href').substring(1);
-            console.log('Nav link clicked:', sectionId); // Debug log
             showSection(sectionId);
         });
     });
@@ -203,16 +201,8 @@ if (!isMobile) {
 
 // Smooth scroll for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
+    const originalHandler = anchor.onclick;
+    anchor.onclick = null;
 });
 
 // Enhanced section reveal with staggered animations
