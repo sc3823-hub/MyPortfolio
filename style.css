@@ -20,7 +20,7 @@
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)), url('5753195.webp');
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)), url('analytics.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -44,7 +44,7 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
-    url('5753195.webp') no-repeat center center;
+    url('analytics.jpg') no-repeat center center;
     background-size: cover;
     will-change: transform;
     z-index: -1;
@@ -376,8 +376,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     transition: all 0.3s ease;
     opacity: 0.9;
@@ -401,14 +401,14 @@
     }
     
     .linkedin-button img {
-    width: 15px !important;
-    height: 15px !important;
+    width: 12px !important;
+    height: 12px !important;
     object-fit: contain;
     filter: brightness(0) invert(1);
     }
     
     .github-button i {
-    font-size: 18px;
+    font-size: 16px;
     color: white;
     }
     
@@ -614,27 +614,27 @@
     
     .linkedin-button,
     .github-button {
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
     }
     
     .linkedin-button img {
-    width: 13px !important;
-    height: 13px !important;
+    width: 11px !important;
+    height: 11px !important;
     }
     
     .github-button i {
-    font-size: 16px;
+    font-size: 15px;
     }
     
     @media screen and (max-width: 768px) {
     .linkedin-button img {
-        width: 13px !important;
-        height: 13px !important;
+        width: 11px !important;
+        height: 11px !important;
     }
     
     .github-button i {
-        font-size: 16px;
+        font-size: 15px;
     }
     }
     }
