@@ -90,6 +90,7 @@
     padding: 0.5rem 1rem;
     transition: all 0.3s ease;
     opacity: 0.8;
+    cursor: pointer;
     }
     
     .nav-link:hover,
@@ -159,14 +160,12 @@
     transition: opacity 0.3s ease-out,
                 transform 0.3s ease-out;
     position: relative;
-    z-index: 1;
     }
     
     .section.visible {
     display: flex !important;
     opacity: 1;
     transform: translateY(0);
-    z-index: 2;
     }
     
     /* Section Content */
@@ -454,8 +453,8 @@
     
     /* Optimized Section Transitions for Mobile */
     .section {
-    padding: 2rem 1rem;
     min-height: calc(100vh - 60px);
+    padding: 2rem 1rem;
     }
     
     .section-content {

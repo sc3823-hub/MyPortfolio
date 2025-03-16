@@ -89,27 +89,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to show section
     function showSection(sectionId) {
-        // Hide all sections and remove active class from nav links
+        console.log('Showing section:', sectionId); // Debug log
+
+        // Hide all sections
         sections.forEach(section => {
             section.style.display = 'none';
             section.classList.remove('visible');
         });
-        navLinks.forEach(link => link.classList.remove('active'));
+
+        // Remove active class from all links
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+        });
 
         // Show the target section
         const targetSection = document.getElementById(sectionId);
         const targetLink = document.querySelector(`a[href="#${sectionId}"]`);
-        
+
         if (targetSection) {
             targetSection.style.display = 'flex';
             targetSection.classList.add('visible');
-            if (targetLink) {
-                targetLink.classList.add('active');
-            }
+        }
+
+        if (targetLink) {
+            targetLink.classList.add('active');
         }
 
         // Close mobile menu if open
-        if (window.innerWidth <= 768 && navMenu.classList.contains('active')) {
+        if (window.innerWidth <= 768) {
             navMenu.classList.remove('active');
             if (hamburger) hamburger.classList.remove('active');
         }
@@ -120,6 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const sectionId = link.getAttribute('href').substring(1);
+            console.log('Nav link clicked:', sectionId); // Debug log
             showSection(sectionId);
         });
     });
@@ -395,5 +403,13 @@ document.querySelectorAll('.view-details-btn').forEach(button => {
         const projectName = projectCard.querySelector('h3').textContent;
         const folderPath = button.getAttribute('data-folder');
         showProjectFiles(projectName, folderPath);
+    }
+});
+
+// Remove any conflicting scroll or intersection observers
+const existingObservers = ['sectionObserver', 'animateOnScroll', 'observer'];
+existingObservers.forEach(observerName => {
+    if (window[observerName]) {
+        window[observerName].disconnect();
     }
 });
