@@ -60,7 +60,7 @@ programming (Python, SQL), and business analytics.</span>
 <p>Comprehensive overview of Big Data analytics and visualization techniques, showcasing modern data processing methodologies.</p>
 <div class="project-buttons">
 <a href="Big_Data_Presentation.pptx" class="download-btn" download>Download</a>
-<button class="view-details-btn" onclick="openModal('bigdata-modal')">View Details</button>
+<button class="view-details-btn" data-folder="projects/big-data">View Files</button>
 </div>
 </div>
 <div class="project-card">
@@ -68,7 +68,7 @@ programming (Python, SQL), and business analytics.</span>
 <p>In-depth analysis and visualization of obesity risk factors using Excel & Tableau, with interactive dashboards.</p>
 <div class="project-buttons">
 <a href="Obesity Risk Analysis and Visualization Using Excel & Tableau.zip" class="download-btn" download>Download</a>
-<button class="view-details-btn" onclick="openModal('obesity-modal')">View Details</button>
+<button class="view-details-btn" data-folder="projects/obesity-analysis">View Files</button>
 </div>
 </div>
 <div class="project-card">
@@ -76,7 +76,7 @@ programming (Python, SQL), and business analytics.</span>
 <p>Technical implementation including Python analysis, Excel data processing, and comprehensive reporting.</p>
 <div class="project-buttons">
 <a href="Bike Share Data.zip" class="download-btn" download>Download</a>
-<button class="view-details-btn" onclick="openModal('bikeshare-modal')">View Details</button>
+<button class="view-details-btn" data-folder="projects/bike-share">View Files</button>
 </div>
 </div>
 </div>
@@ -154,6 +154,105 @@ programming (Python, SQL), and business analytics.</span>
         </div>
     </div>
 </div>
+
+<!-- Project Modal -->
+<div class="modal" id="projectModal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2 class="modal-title"></h2>
+        <div class="modal-body">
+            <div class="file-list">
+                <!-- Files will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Modal functionality
+const modal = document.getElementById('projectModal');
+const closeModal = document.querySelector('.close-modal');
+const fileList = document.querySelector('.file-list');
+
+// Close modal when clicking the close button or outside the modal
+closeModal.onclick = () => modal.style.display = "none";
+window.onclick = (event) => {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Function to display files for a project
+async function showProjectFiles(projectName, folderPath) {
+    modal.style.display = "block";
+    document.querySelector('.modal-title').textContent = projectName;
+    
+    try {
+        // Fetch the file list from the server
+        const response = await fetch(`/api/files?folder=${folderPath}`);
+        const files = await response.json();
+        
+        // Display the files
+        fileList.innerHTML = files.map(file => `
+            <div class="file-item">
+                <i class="fas fa-file"></i>
+                <span>${file.name}</span>
+                <a href="${file.path}" class="file-download" download>
+                    <i class="fas fa-download"></i>
+                </a>
+            </div>
+        `).join('');
+    } catch (error) {
+        fileList.innerHTML = '<p>Error loading files. Please try again later.</p>';
+    }
+}
+
+// Update all view details buttons
+document.querySelectorAll('.view-details-btn').forEach(button => {
+    button.onclick = () => {
+        const projectCard = button.closest('.project-card');
+        const projectName = projectCard.querySelector('h3').textContent;
+        const folderPath = button.getAttribute('data-folder');
+        showProjectFiles(projectName, folderPath);
+    }
+});
+</script>
+
+<style>
+/* File List Styles */
+.file-list {
+    margin-top: 1rem;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.file-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.file-item i {
+    color: var(--accent-color);
+}
+
+.file-item .file-download {
+    margin-left: auto;
+    color: var(--accent-color);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.file-item .file-download:hover {
+    opacity: 1;
+}
+</style>
 
 <!-- Resume Section -->
 <section id="resume" class="section">
