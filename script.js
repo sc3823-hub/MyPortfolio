@@ -89,27 +89,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to show section
     function showSection(sectionId) {
-        // Hide all sections first
+        // Hide all sections and remove active class from nav links
         sections.forEach(section => {
             section.style.display = 'none';
             section.classList.remove('visible');
         });
+        navLinks.forEach(link => link.classList.remove('active'));
 
         // Show the target section
         const targetSection = document.getElementById(sectionId);
+        const targetLink = document.querySelector(`a[href="#${sectionId}"]`);
+        
         if (targetSection) {
             targetSection.style.display = 'flex';
-            // Add visible class immediately
             targetSection.classList.add('visible');
+            if (targetLink) {
+                targetLink.classList.add('active');
+            }
+        }
 
-            // Update active navigation link
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
-            });
+        // Close mobile menu if open
+        if (window.innerWidth <= 768 && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            if (hamburger) hamburger.classList.remove('active');
         }
     }
 
@@ -119,12 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             const sectionId = link.getAttribute('href').substring(1);
             showSection(sectionId);
-
-            // Close mobile menu if open
-            if (window.innerWidth <= 768) {
-                navMenu.classList.remove('active');
-                if (hamburger) hamburger.classList.remove('active');
-            }
         });
     });
 
