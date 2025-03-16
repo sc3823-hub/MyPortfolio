@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to show section
     function showSection(sectionId) {
-        // First hide all sections
+        // Hide all sections first
         sections.forEach(section => {
             section.style.display = 'none';
             section.classList.remove('visible');
@@ -99,10 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const targetSection = document.getElementById(sectionId);
         if (targetSection) {
             targetSection.style.display = 'flex';
-            // Use setTimeout to ensure the display change takes effect before adding the visible class
-            setTimeout(() => {
-                targetSection.classList.add('visible');
-            }, 10);
+            // Add visible class immediately
+            targetSection.classList.add('visible');
 
             // Update active navigation link
             navLinks.forEach(link => {
@@ -122,14 +120,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const sectionId = link.getAttribute('href').substring(1);
             showSection(sectionId);
 
-            // Close mobile menu if screen width <= 768px
+            // Close mobile menu if open
             if (window.innerWidth <= 768) {
                 navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
+                if (hamburger) hamburger.classList.remove('active');
             }
-
-            // Update URL hash without scrolling
-            history.pushState(null, '', `#${sectionId}`);
         });
     });
 
@@ -142,8 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Show initial section based on hash or default to home
-    const initialSection = window.location.hash ? 
-        window.location.hash.substring(1) : 'home';
+    const initialSection = window.location.hash ? window.location.hash.substring(1) : 'home';
     showSection(initialSection);
 
     // Handle hash change

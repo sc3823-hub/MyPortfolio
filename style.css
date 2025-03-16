@@ -150,12 +150,13 @@
     padding: 4rem 2rem;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.4s ease-out,
-                transform 0.4s ease-out;
+    transition: opacity 0.3s ease-out,
+                transform 0.3s ease-out;
     position: relative;
     }
     
     .section.visible {
+    display: flex !important;
     opacity: 1;
     transform: translateY(0);
     }
@@ -167,7 +168,7 @@
     margin: 0 auto;
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.4s ease-out;
+    transition: all 0.3s ease-out;
     }
     
     .section.visible .section-content {
@@ -983,6 +984,7 @@
     .nav-link.active {
         color: var(--accent-color);
         opacity: 1;
+        font-weight: 600;
     }
 
     /* Ensure first section is visible by default */
