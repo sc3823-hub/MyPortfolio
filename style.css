@@ -322,26 +322,32 @@ main {
     transform: rotate(-45deg) translate(6px, -6px);
 }
 
-/* LinkedIn Button */
+/* Social Media Fixed Buttons */
 .linkedin-button {
     position: fixed;
     bottom: 20px;
     right: 90px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: #0077B5;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    will-change: transform;
+    opacity: 0.9;
     z-index: 100;
-}
-
-.linkedin-button:hover {
-    opacity: 1;
-    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .linkedin-button img {
     width: 24px;
     height: 24px;
     filter: brightness(0) invert(1);
+    transition: transform 0.3s ease;
 }
 
-/* GitHub Button */
 .github-button {
     position: fixed;
     bottom: 20px;
@@ -353,21 +359,51 @@ main {
     height: 50px;
     background: #333;
     border-radius: 50%;
-    margin-top: 1rem;
     transition: all 0.3s ease;
     will-change: transform;
     opacity: 0.9;
     z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+.linkedin-button:hover,
 .github-button:hover {
     opacity: 1;
-    transform: scale(1.05);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 .github-button i {
-    font-size: 30px;
+    font-size: 28px;
     color: white;
+    transition: transform 0.3s ease;
+}
+
+/* Mobile Optimization for Social Buttons */
+@media screen and (max-width: 768px) {
+    .linkedin-button,
+    .github-button {
+        width: 45px;
+        height: 45px;
+        bottom: 15px;
+    }
+
+    .linkedin-button {
+        right: 75px;
+    }
+
+    .github-button {
+        right: 15px;
+    }
+
+    .linkedin-button img {
+        width: 22px;
+        height: 22px;
+    }
+
+    .github-button i {
+        font-size: 24px;
+    }
 }
 
 /* Mobile Optimizations */
