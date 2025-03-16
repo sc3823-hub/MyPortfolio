@@ -742,26 +742,50 @@ html {
     margin: 2rem 0;
 }
 
+.resume-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 2rem 0;
+}
+
 .resume-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.8rem 2rem;
-    background: linear-gradient(135deg, var(--accent-color), var(--accent-color-dark));
-    border-radius: 30px;
-    color: white;
-    font-weight: 600;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, var(--accent-color), #2980b9);
+    color: var(--text-light);
     text-decoration: none;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+    border: none;
+    margin: 0 auto;
 }
 
 .resume-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(var(--accent-color-rgb), 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+    background: linear-gradient(135deg, #2980b9, var(--accent-color));
 }
 
 .resume-btn i {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+}
+
+/* Mobile Optimization for Resume Button */
+@media screen and (max-width: 768px) {
+    .resume-btn {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+        width: auto;
+        min-width: 200px;
+    }
 }
 
 .skill-tags {
