@@ -1,348 +1,855 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>My Portfolio</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-<!-- Navigation Bar -->
-<header>
-<div class="nav-container">
-<button class="hamburger-menu" aria-label="Menu">
-<span></span>
-<span></span>
-<span></span>
-</button>
-<nav class="nav-menu">
-<ul>
-<li><a href="#home" class="nav-link" aria-label="Home">Home</a></li>
-<li><a href="#about" class="nav-link" aria-label="About">About</a></li>
-<li><a href="#projects" class="nav-link" aria-label="Projects">Projects</a></li>
-<li><a href="#resume" class="nav-link" aria-label="Resume">Resume</a></li>
-<li><a href="#contact" class="nav-link" aria-label="Contact">Contact</a></li>
-</ul>
-</nav>
-</div>
-</header>
-
-<main>
-<!-- Home Section -->
-<section id="home" class="section active">
-<div class="hero-content">
-<h1>Suraj Sagar Chathiri</h1>
-<p class="role-text">Data Analyst & Marketing Specialist</p>
-</div>
-</section>
-
-<!-- About Section -->
-<section id="about" class="section">
-<div class="section-content">
-<h2 class="section-title">About Me</h2>
-<p>
-I am a highly motivated <span class="highlight">Business Analytics master's student</span> with strong analytical 
-and problem-solving skills. My expertise lies in <span class="highlight">data visualization (Tableau), 
-programming (Python, SQL), and business analytics.</span>
-</p>
-</div>
-</section>
-
-<!-- Projects Section -->
-<section id="projects" class="section">
-<div class="section-content">
-<h2 class="section-title">Projects</h2>
-<div class="projects-grid">
-<div class="project-card">
-<h3>📂 Big Data Presentation</h3>
-<p>Comprehensive overview of Big Data analytics and visualization techniques, showcasing modern data processing methodologies.</p>
-<div class="project-buttons">
-<a href="Big_Data_Presentation.pptx" class="download-btn" download>Download</a>
-<button class="view-details-btn" data-folder="projects/big-data">View Files</button>
-</div>
-</div>
-<div class="project-card">
-<h3>📊 Obesity Risk Analysis</h3>
-<p>In-depth analysis and visualization of obesity risk factors using Excel & Tableau, with interactive dashboards.</p>
-<div class="project-buttons">
-<a href="Obesity Risk Analysis and Visualization Using Excel & Tableau.zip" class="download-btn" download>Download</a>
-<button class="view-details-btn" data-folder="projects/obesity-analysis">View Files</button>
-</div>
-</div>
-<div class="project-card">
-<h3>🖥️ Bike Share Data Files</h3>
-<p>Technical implementation including Python analysis, Excel data processing, and comprehensive reporting.</p>
-<div class="project-buttons">
-<a href="Bike Share Data.zip" class="download-btn" download>Download</a>
-<button class="view-details-btn" data-folder="projects/bike-share">View Files</button>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Project Modals -->
-<div id="bigdata-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal" onclick="closeModal('bigdata-modal')">&times;</span>
-        <h2>Big Data Presentation</h2>
-        <div class="modal-body">
-            <h3>Files Included:</h3>
-            <ul>
-                <li>Big_Data_Presentation.pptx - Main presentation file</li>
-                <li>Data visualization examples</li>
-                <li>Analytics methodology documentation</li>
-            </ul>
-            <h3>Description:</h3>
-            <p>A comprehensive presentation on Big Data analytics covering:</p>
-            <ul>
-                <li>Modern data processing techniques</li>
-                <li>Visualization methodologies</li>
-                <li>Real-world applications</li>
-                <li>Best practices and case studies</li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div id="obesity-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal" onclick="closeModal('obesity-modal')">&times;</span>
-        <h2>Obesity Risk Analysis</h2>
-        <div class="modal-body">
-            <h3>Files Included:</h3>
-            <ul>
-                <li>Excel analysis files</li>
-                <li>Tableau workbooks and dashboards</li>
-                <li>Data visualization exports</li>
-                <li>Documentation and methodology</li>
-            </ul>
-            <h3>Description:</h3>
-            <p>Complete analysis of obesity risk factors including:</p>
-            <ul>
-                <li>Interactive Tableau dashboards</li>
-                <li>Statistical analysis in Excel</li>
-                <li>Visualization of key findings</li>
-                <li>Detailed methodology report</li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div id="bikeshare-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal" onclick="closeModal('bikeshare-modal')">&times;</span>
-        <h2>Bike Share Data Analysis</h2>
-        <div class="modal-body">
-            <h3>Files Included:</h3>
-            <ul>
-                <li>Python analysis scripts</li>
-                <li>Excel data processing files</li>
-                <li>Final report and documentation</li>
-                <li>Data visualization outputs</li>
-            </ul>
-            <h3>Description:</h3>
-            <p>Comprehensive bike share data analysis including:</p>
-            <ul>
-                <li>Python-based data processing</li>
-                <li>Excel analysis and visualization</li>
-                <li>Detailed findings report</li>
-                <li>Implementation recommendations</li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<!-- Project Modal -->
-<div class="modal" id="projectModal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <h2 class="modal-title"></h2>
-        <div class="modal-body">
-            <div class="file-list">
-                <!-- Files will be dynamically loaded here -->
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-// Modal functionality
-const modal = document.getElementById('projectModal');
-const closeModal = document.querySelector('.close-modal');
-const fileList = document.querySelector('.file-list');
-
-// Close modal when clicking the close button or outside the modal
-closeModal.onclick = () => modal.style.display = "none";
-window.onclick = (event) => {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
+/* General Styles */
+:root {
+--primary-color: #2c3e50;
+--secondary-color: #34495e;
+--accent-color: #3498db;
+--background-dark: rgba(0, 0, 0, 0.92);
+--text-light: #ffffff;
+--transition-speed: 0.3s;
 }
 
-// Function to display files for a project
-async function showProjectFiles(projectName, folderPath) {
-    modal.style.display = "block";
-    document.querySelector('.modal-title').textContent = projectName;
-    
-    try {
-        // Fetch the file list from the server
-        const response = await fetch(`/api/files?folder=${folderPath}`);
-        const files = await response.json();
-        
-        // Display the files
-        fileList.innerHTML = files.map(file => `
-            <div class="file-item">
-                <i class="fas fa-file"></i>
-                <span>${file.name}</span>
-                <a href="${file.path}" class="file-download" download>
-                    <i class="fas fa-download"></i>
-                </a>
-            </div>
-        `).join('');
-    } catch (error) {
-        fileList.innerHTML = '<p>Error loading files. Please try again later.</p>';
-    }
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
 }
 
-// Update all view details buttons
-document.querySelectorAll('.view-details-btn').forEach(button => {
-    button.onclick = () => {
-        const projectCard = button.closest('.project-card');
-        const projectName = projectCard.querySelector('h3').textContent;
-        const folderPath = button.getAttribute('data-folder');
-        showProjectFiles(projectName, folderPath);
-    }
-});
-</script>
-
-<style>
-/* File List Styles */
-.file-list {
-    margin-top: 1rem;
+body {
+margin: 0;
+padding: 0;
+font-family: 'Poppins', sans-serif;
+    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('Background.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('analytics.jpg');
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+color: #fff;
+line-height: 1.6;
+overflow-x: hidden;
+opacity: 0.95;
+transition: opacity 0.3s ease;
 }
 
-.file-item {
-    display: flex;
+/* Optimized Background Image */
+body::before {
+content: "";
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
+                url('Background.jpg') no-repeat center center;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
+                url('analytics.jpg') no-repeat center center;
+background-size: cover;
+will-change: transform;
+z-index: -1;
+transform: translateZ(0);
+-webkit-backface-visibility: hidden;
+backface-visibility: hidden;
+}
+
+body.bg-loaded {
+opacity: 1;
+}
+
+/* Main Content Area */
+main {
+padding-top: 0;
+min-height: 100vh;
+position: relative;
+overflow: hidden;
+}
+
+/* Modern Animation Keyframes */
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(30px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+@keyframes slideInLeft {
+from {
+opacity: 0;
+transform: translateX(-50px);
+}
+to {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+@keyframes gradientBG {
+0% {
+background-position: 0% 50%;
+}
+50% {
+background-position: 100% 50%;
+}
+100% {
+background-position: 0% 50%;
+}
+}
+
+/* Section Visibility and Transitions */
+.section {
+width: 100%;
+max-width: 100%;
+padding: 4rem 2rem;
+min-height: 100vh;
+display: none;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+opacity: 0;
+transform: translateY(20px);
+transition: opacity 0.4s cubic-bezier(0.4, 0.0, 0.2, 1),
+transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+will-change: opacity, transform;
+position: relative;
+}
+
+.section.visible {
+display: flex;
+opacity: 1;
+transform: translateY(0);
+}
+
+/* Section Content */
+.section-content {
+max-width: 800px;
+margin: 0 auto;
+opacity: 0;
+transform: translateY(20px);
+transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.section-content.visible {
+opacity: 1;
+transform: translateY(0);
+}
+
+/* Section Spacing */
+.section:not(:first-child) {
+margin-top: 0;
+padding-top: 80px;
+}
+
+/* Adjust vertical spacing for better centering */
+.section-title {
+font-size: 2.5rem;
+margin-bottom: 2rem;
+text-align: center;
+color: var(--text-light);
+font-weight: 600;
+}
+
+/* Remove all underlines */
+.section-title::after,
+.section-title::before,
+.nav-link::after {
+display: none;
+}
+
+/* Projects Grid */
+.projects-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+gap: 2rem;
+width: 100%;
+max-width: 1200px;
+margin: 2rem auto;
+place-items: center;
+}
+
+/* Home Section */
+.hero-content {
+max-width: 800px;
+width: 100%;
+padding: 2rem;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+}
+
+.hero-content h1 {
+font-size: 3rem;
+margin-bottom: 1rem;
+font-weight: 700;
+}
+
+.role-text {
+font-size: 1.5rem;
+color: var(--accent-color);
+font-weight: 500;
+}
+
+/* Section Titles */
+.section-title {
+font-size: 2.5rem;
+margin-bottom: 2rem;
+position: relative;
+padding-bottom: 1rem;
+}
+
+.section-title::after {
+content: '';
+position: absolute;
+bottom: 0;
+left: 0;
+width: 100px;
+height: 3px;
+background: var(--primary-color);
+}
+
+/* Enhanced Project Cards */
+.project-card {
+background: rgba(255, 255, 255, 0.05);
+border-radius: 8px;
+padding: 2rem;
+transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.project-card:hover {
+transform: translateY(-5px);
+background: rgba(255, 255, 255, 0.08);
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced Button Animations */
+.download-btn, .resume-btn {
+display: inline-block;
+padding: 0.8rem 1.5rem;
+background: var(--accent-color);
+color: var(--text-light);
+text-decoration: none;
+border-radius: 4px;
+transition: all 0.3s ease;
+border: none;
+font-weight: 500;
+}
+
+.download-btn:hover, .resume-btn:hover {
+background: #2980b9;
+transform: translateY(-2px);
+}
+
+/* Mobile Navigation */
+.hamburger-menu {
+display: none;
+background: none;
+border: none;
+cursor: pointer;
+padding: 0.8rem;
+position: fixed;
+right: 1rem;
+top: 0.5rem;
+z-index: 2000;
+width: 44px;
+height: 44px;
+transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+-webkit-tap-highlight-color: transparent;
+}
+
+.hamburger-menu span {
+display: block;
+width: 24px;
+height: 2px;
+background-color: var(--text-light);
+margin: 4px auto;
+transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.hamburger-menu.active span:nth-child(1) {
+transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+opacity: 0;
+transform: translateX(-15px);
+}
+
+.hamburger-menu.active span:nth-child(3) {
+transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Social Media Fixed Buttons */
+.linkedin-button {
+.linkedin-button, .github-button {
+position: fixed;
+bottom: 20px;
+    right: 90px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: #0077B5;
+    width: 45px;
+    height: 45px;
+border-radius: 50%;
+transition: all 0.3s ease;
+    will-change: transform;
+opacity: 0.9;
+z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.linkedin-button img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+    transition: transform 0.3s ease;
+.linkedin-button {
+    right: 80px;
+}
+
+.github-button {
+    position: fixed;
+    bottom: 20px;
+right: 20px;
+    display: inline-flex;
     align-items: center;
-    gap: 1rem;
-    padding: 0.8rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    transition: background-color 0.2s ease;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: #333;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    will-change: transform;
+    opacity: 0.9;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.file-item:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+.linkedin-button:hover,
+.github-button:hover {
+opacity: 1;
+transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
-.file-item i {
-    color: var(--accent-color);
+.linkedin-button img {
+    width: 22px;
+    height: 22px;
+    filter: brightness(0) invert(1);
 }
 
-.file-item .file-download {
-    margin-left: auto;
-    color: var(--accent-color);
-    text-decoration: none;
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
+.github-button i {
+    font-size: 28px;
+    font-size: 24px;
+color: white;
+    transition: transform 0.3s ease;
 }
 
-.file-item .file-download:hover {
-    opacity: 1;
+/* Mobile Optimization for Social Buttons */
+/* Mobile Optimization for Action Buttons */
+@media screen and (max-width: 768px) {
+.linkedin-button,
+.github-button {
+        width: 45px;
+        height: 45px;
+        width: 40px;
+        height: 40px;
+bottom: 15px;
 }
-</style>
 
-<!-- Resume Section -->
-<section id="resume" class="section">
-<div class="section-content">
-<h2 class="section-title">My Resume</h2>
-<div class="resume-content">
-<a href="My_Resume.pdf" class="resume-btn" target="_blank" rel="noopener">
-<span>Download Resume</span>
-<i class="fas fa-download"></i>
-</a>
-</div>
-</div>
-</section>
+.linkedin-button {
+        right: 75px;
+        right: 70px;
+}
 
-<!-- Contact Section -->
-<section id="contact" class="section">
-<div class="section-content">
-<h2 class="section-title">Contact Me</h2>
-<p class="section-subtitle">Let's Connect</p>
+.github-button {
+right: 15px;
+}
 
-<div class="contact-section">
-<div class="contact-info">
-<div class="contact-item">
-<i class="fas fa-envelope"></i>
-<div>
-<div class="contact-label">Email</div>
-<div class="contact-text">suraj.chathiri@gmail.com</div>
-</div>
-</div>
-<div class="contact-item">
-<i class="fas fa-phone"></i>
-<div>
-<div class="contact-label">Phone</div>
-<div class="contact-text">+1 (928) 600-3369</div>
-</div>
-</div>
-<div class="contact-item">
-<i class="fas fa-map-marker-alt"></i>
-<div>
-<div class="contact-label">Location</div>
-<div class="contact-text">Arizona, AZ</div>
-</div>
-</div>
-</div>
+.linkedin-button img {
+        width: 22px;
+        height: 22px;
+        width: 20px;
+        height: 20px;
+}
 
-<div class="social-links">
-                        <a href="https://www.linkedin.com/in/suraj-sagar-chathiri-490084345/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
-                        <a href="https://linkedin.com/in/suraj-sagar-chathiri-490084345" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
-<i class="fab fa-linkedin-in"></i>
-</a>
-<a href="https://github.com/sc3823-hub" class="social-link" aria-label="GitHub" target="_blank" rel="noopener">
-<i class="fab fa-github"></i>
-</a>
-<a href="#" class="social-link" aria-label="Twitter" target="_blank" rel="noopener">
-<i class="fab fa-twitter"></i>
-</a>
-</div>
+.github-button i {
+        font-size: 24px;
+        font-size: 20px;
+}
+}
 
-<div class="skill-tags">
-<span class="skill-tag">Data Analysis</span>
-<span class="skill-tag">Marketing Strategy</span>
-<span class="skill-tag">Excel</span>
-<span class="skill-tag">Tableau</span>
-<span class="skill-tag">SQL</span>
-<span class="skill-tag">Python</span>
-<span class="skill-tag">Digital Marketing</span>
-<span class="skill-tag">SEO</span>
-</div>
-</div>
-</section>
-</main>
+/* Mobile Optimizations */
+@media screen and (max-width: 768px) {
+.background-image {
+width: 100%;
+height: 100vh;
+opacity: 0.15;
+}
 
-<!-- LinkedIn Button -->
-    <a href="https://linkedin.com/in/suraj-sagar-chathiri-490084345" 
-target="_blank" 
-rel="noopener"
-class="linkedin-button"
-aria-label="LinkedIn Profile">
-<img src="LI-In-Bug.png" alt="LinkedIn">
-</a>
+main {
+width: 100%;
+margin-right: 0;
+}
 
-<!-- GitHub Button -->
-<a href="https://github.com/sc3823-hub" 
-target="_blank" 
-rel="noopener"
-class="github-button"
-aria-label="GitHub Profile">
-<i class="fab fa-github"></i>
-</a>
+.section {
+padding: 2rem 1rem;
+}
 
-<!-- Move all scripts to the end of body -->
-<script src="script.js"></script>
-</body>
-</html>
+/* Optimized Background for Mobile */
+body {
+background-attachment: scroll;
+}
+
+/* Optimized Section Transitions for Mobile */
+.section {
+min-height: 100vh;
+padding: 60px 1rem;
+transition: opacity 0.3s ease;
+}
+
+.section-content {
+padding: 1rem;
+transition: all 0.3s ease;
+}
+
+.section:not(:first-child) {
+padding-top: 60px;
+}
+
+/* Ensure content stays centered */
+.section-content {
+margin: auto;
+height: auto;
+min-height: calc(100vh - 120px);
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
+
+/* Mobile Menu */
+.hamburger-menu {
+display: block;
+position: fixed;
+top: 10px;
+right: 10px;
+z-index: 2000;
+}
+
+.nav-menu {
+position: fixed;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100vh;
+background: rgba(0, 0, 0, 0.95);
+padding-top: 80px;
+transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+z-index: 1500;
+visibility: hidden;
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+}
+
+.nav-menu.active {
+left: 0;
+visibility: visible;
+}
+
+.nav-menu ul {
+flex-direction: column;
+align-items: center;
+padding: 0;
+margin: 0;
+height: auto;
+}
+
+.nav-menu ul li {
+opacity: 0;
+transform: translateX(-20px);
+transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+transition-delay: calc(0.05s * var(--i));
+}
+
+.nav-menu.active ul li {
+opacity: 1;
+transform: translateX(0);
+}
+
+.nav-link {
+padding: 1rem;
+font-size: 1.2rem;
+transition: all 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link:active {
+color: var(--primary-color);
+background: rgba(255, 255, 255, 0.05);
+}
+
+/* Ensure menu is above other content */
+.nav-menu::before {
+content: '';
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.8);
+z-index: -1;
+}
+
+/* Mobile Sections */
+.section {
+min-height: 100vh;
+padding: 1rem;
+margin: 0;
+}
+
+.section-content {
+padding: 1rem;
+}
+
+/* Mobile Typography */
+.hero-content h1 {
+font-size: 2.25rem;
+}
+
+.role-text {
+font-size: 1.2rem;
+}
+
+/* Mobile Buttons */
+.download-btn, .resume-btn {
+width: 100%;
+text-align: center;
+margin-bottom: 1rem;
+}
+
+/* Remove fixed LinkedIn button styles */
+.linkedin-button {
+position: relative;
+bottom: auto;
+right: auto;
+left: auto;
+margin: 1rem auto;
+}
+
+/* Disable Parallax on Mobile */
+body {
+background-attachment: scroll;
+}
+
+/* Optimize Header */
+header {
+transform: none !important;
+will-change: auto;
+}
+
+.section-title {
+font-size: 2rem;
+margin-bottom: 2rem;
+}
+
+.section-content {
+animation-duration: 0.6s;
+}
+
+.project-card {
+margin-bottom: 1.5rem;
+}
+
+.project-card:hover {
+transform: translateY(-3px);
+}
+
+.nav-link::after {
+display: none;
+}
+
+.github-button,
+.linkedin-button {
+width: 40px;
+height: 40px;
+}
+
+.github-button i {
+font-size: 24px;
+}
+
+.linkedin-button img {
+width: 24px;
+height: 24px;
+}
+
+.linkedin-button {
+right: 70px;
+}
+}
+
+/* Smooth Scrolling */
+html {
+scroll-behavior: smooth;
+height: 100%;
+}
+
+/* AOS Animations Override */
+[data-aos] {
+pointer-events: none;
+}
+[data-aos].aos-animate {
+pointer-events: auto;
+}
+
+/* Tippy Tooltip Customization */
+.tippy-box {
+background-color: var(--primary-color);
+color: var(--text-light);
+font-weight: 500;
+}
+
+.tippy-arrow {
+color: var(--primary-color);
+}
+
+/* Enhanced Navigation Animation */
+.nav-link {
+position: relative;
+transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+padding: 0.8rem 1.2rem;
+}
+
+.nav-link:hover {
+transform: translateY(-2px);
+}
+
+/* Section Title Animation */
+.section-title {
+position: relative;
+overflow: hidden;
+}
+
+.section-title::before {
+content: '';
+position: absolute;
+bottom: 0;
+left: 0;
+width: 100%;
+height: 3px;
+background: linear-gradient(90deg, var(--primary-color), transparent);
+transform: scaleX(0);
+transform-origin: left;
+transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section.visible .section-title::before {
+transform: scaleX(1);
+}
+
+/* Contact Section Enhancement */
+.contact-section {
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.2);
+border-radius: 15px;
+padding: 2rem;
+margin: 2rem auto;
+max-width: 800px;
+box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.contact-info {
+display: grid;
+gap: 1.5rem;
+margin-bottom: 2rem;
+}
+
+.contact-item {
+display: flex;
+align-items: center;
+gap: 1rem;
+padding: 1rem;
+background: rgba(255, 255, 255, 0.05);
+border-radius: 10px;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-item:hover {
+transform: translateY(-2px);
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contact-item i {
+font-size: 1.5rem;
+color: var(--accent-color);
+}
+
+.contact-label {
+font-size: 0.9rem;
+color: var(--text-light);
+margin-bottom: 0.25rem;
+}
+
+.contact-text {
+font-size: 1.1rem;
+color: var(--text-color);
+}
+
+.social-links {
+display: flex;
+justify-content: center;
+gap: 1.5rem;
+margin: 2rem 0;
+}
+
+.social-link {
+width: 45px;
+height: 45px;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 50%;
+background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+border: 1px solid rgba(255, 255, 255, 0.1);
+transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.social-link:hover {
+transform: translateY(-3px);
+background: var(--accent-color);
+}
+
+.social-link i {
+font-size: 1.2rem;
+color: var(--text-color);
+}
+
+.resume-container {
+text-align: center;
+margin: 2rem 0;
+}
+
+.resume-content {
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+margin: 2rem 0;
+}
+
+.resume-btn {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 0.8rem;
+padding: 1rem 2.5rem;
+background: linear-gradient(135deg, var(--accent-color), #2980b9);
+color: var(--text-light);
+text-decoration: none;
+border-radius: 30px;
+font-size: 1.1rem;
+font-weight: 600;
+transition: all 0.3s ease;
+box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+border: none;
+margin: 0 auto;
+}
+
+.resume-btn:hover {
+transform: translateY(-3px);
+box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+background: linear-gradient(135deg, #2980b9, var(--accent-color));
+}
+
+.resume-btn i {
+font-size: 1.2rem;
+}
+
+/* Mobile Optimization for Resume Button */
+@media screen and (max-width: 768px) {
+.resume-btn {
+padding: 0.8rem 2rem;
+font-size: 1rem;
+width: auto;
+min-width: 200px;
+}
+}
+
+.skill-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 0.8rem;
+justify-content: center;
+margin-top: 2rem;
+}
+
+.skill-tag {
+padding: 0.5rem 1rem;
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 20px;
+font-size: 0.9rem;
+color: var(--text-color);
+transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.skill-tag:hover {
+transform: translateY(-2px);
+background: rgba(var(--accent-color-rgb), 0.1);
+}
+
+.section-subtitle {
+text-align: center;
+color: var(--text-light);
+font-size: 1.1rem;
+margin-bottom: 2rem;
+opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+.contact-section {
+padding: 1.5rem;
+margin: 1rem;
+}
+
+.contact-info {
+gap: 1rem;
+}
+
+.contact-item {
+padding: 0.8rem;
+}
+
+.social-links {
+gap: 1rem;
+}
+
+.social-link {
+width: 40px;
+height: 40px;
+}
+
+.skill-tags {
+gap: 0.5rem;
+}
+
+.skill-tag {
+padding: 0.4rem 0.8rem;
+font-size: 0.8rem;
+}

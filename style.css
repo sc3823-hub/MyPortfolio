@@ -20,7 +20,8 @@
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)), url('5753195.webp');
+        background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('Background.jpg');
+        background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('analytics.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -31,10 +32,6 @@
     transition: opacity 0.3s ease;
     }
     
-    body.bg-loaded {
-    opacity: 1;
-    }
-    
     /* Optimized Background Image */
     body::before {
     content: "";
@@ -43,72 +40,28 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
-    url('5753195.webp') no-repeat center center;
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
+                    url('Background.jpg') no-repeat center center;
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
+                    url('analytics.jpg') no-repeat center center;
     background-size: cover;
     will-change: transform;
     z-index: -1;
     transform: translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    filter: blur(5px);
     }
     
-    /* Navigation */
-    header {
-    background: var(--background-dark);
-    padding: 1rem;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    }
-    
-    .nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    }
-    
-    .nav-menu ul {
-    list-style: none;
-    display: flex;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
-    }
-    
-    .nav-link {
-    position: relative;
-    color: var(--text-light);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
-    opacity: 0.8;
-    cursor: pointer;
-    }
-    
-    .nav-link:hover,
-    .nav-link.active {
-    color: var(--accent-color);
+    body.bg-loaded {
     opacity: 1;
     }
     
-    .nav-link.active {
-    font-weight: 600;
-    }
-    
-    /* Main Content */
+    /* Main Content Area */
     main {
-    padding-top: 60px;
+    padding-top: 0;
     min-height: 100vh;
     position: relative;
-    overflow-x: hidden;
+    overflow: hidden;
     }
     
     /* Modern Animation Keyframes */
@@ -148,43 +101,38 @@
     
     /* Section Visibility and Transitions */
     .section {
-    min-height: 100vh;
     width: 100%;
+    max-width: 100%;
+    padding: 4rem 2rem;
+    min-height: 100vh;
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 4rem 2rem;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.3s ease-out,
-                transform 0.3s ease-out;
+    transition: opacity 0.4s cubic-bezier(0.4, 0.0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    will-change: opacity, transform;
     position: relative;
-    z-index: 1;
     }
     
     .section.visible {
-    display: flex !important;
+    display: flex;
     opacity: 1;
     transform: translateY(0);
-    z-index: 2;
-    }
-    
-    .section.active {
-    display: flex;
     }
     
     /* Section Content */
     .section-content {
-    width: 100%;
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.3s ease-out;
+    transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
     }
     
-    .section.visible .section-content {
+    .section-content.visible {
     opacity: 1;
     transform: translateY(0);
     }
@@ -214,12 +162,12 @@
     /* Projects Grid */
     .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
     width: 100%;
     max-width: 1200px;
     margin: 2rem auto;
-    place-items: stretch;
+    place-items: center;
     }
     
     /* Home Section */
@@ -267,80 +215,34 @@
     /* Enhanced Project Cards */
     .project-card {
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 12px;
+    border-radius: 8px;
     padding: 2rem;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
     
     .project-card:hover {
     transform: translateY(-5px);
     background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    }
-    
-    .project-card h3 {
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
-    color: var(--accent-color);
-    }
-    
-    .project-card p {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-    color: rgba(255, 255, 255, 0.9);
-    }
-    
-    .project-buttons {
-    display: flex;
-    gap: 1rem;
-    margin-top: auto;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
     
     /* Enhanced Button Animations */
-    .download-btn, .view-details-btn {
-    flex: 1;
-    padding: 0.8rem 1.2rem;
-    font-size: 0.95rem;
-    font-weight: 500;
-    text-align: center;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    }
-    
-    .download-btn {
-    background: linear-gradient(135deg, var(--accent-color), #2980b9);
+    .download-btn, .resume-btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background: var(--accent-color);
     color: var(--text-light);
     text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
     border: none;
+    font-weight: 500;
     }
     
-    .view-details-btn {
-    background: transparent;
-    color: var(--text-light);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    .download-btn:hover {
-    background: linear-gradient(135deg, #2980b9, var(--accent-color));
+    .download-btn:hover, .resume-btn:hover {
+    background: #2980b9;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-    }
-    
-    .view-details-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.3);
     }
     
     /* Mobile Navigation */
@@ -383,73 +285,130 @@
     }
     
     /* Social Media Fixed Buttons */
+    .linkedin-button {
     .linkedin-button, .github-button {
     position: fixed;
-    bottom: 30px;
+    bottom: 20px;
+        right: 90px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 35px;
-    height: 35px;
+        width: 50px;
+        height: 50px;
+        background: #0077B5;
+        width: 45px;
+        height: 45px;
     border-radius: 50%;
     transition: all 0.3s ease;
+        will-change: transform;
     opacity: 0.9;
     z-index: 100;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    }
-    
-    .linkedin-button {
-    right: 85px;
-    background: #0077B5;
-    }
-    
-    .github-button {
-    right: 25px;
-    background: #333;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
     
     .linkedin-button img {
-    width: 12px !important;
-    height: 12px !important;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1);
+        transition: transform 0.3s ease;
+    .linkedin-button {
+        right: 80px;
     }
     
-    .github-button i {
-    font-size: 16px;
-    color: white;
+    .github-button {
+        position: fixed;
+        bottom: 20px;
+    right: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        background: #333;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        will-change: transform;
+        opacity: 0.9;
+        z-index: 100;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
     
     .linkedin-button:hover,
     .github-button:hover {
     opacity: 1;
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .linkedin-button img {
+        width: 22px;
+        height: 22px;
+        filter: brightness(0) invert(1);
+    }
+    
+    .github-button i {
+        font-size: 28px;
+        font-size: 24px;
+    color: white;
+        transition: transform 0.3s ease;
+    }
+    
+    /* Mobile Optimization for Social Buttons */
+    /* Mobile Optimization for Action Buttons */
+    @media screen and (max-width: 768px) {
+    .linkedin-button,
+    .github-button {
+            width: 45px;
+            height: 45px;
+            width: 40px;
+            height: 40px;
+    bottom: 15px;
+    }
+    
+    .linkedin-button {
+            right: 75px;
+            right: 70px;
+    }
+    
+    .github-button {
+    right: 15px;
+    }
+    
+    .linkedin-button img {
+            width: 22px;
+            height: 22px;
+            width: 20px;
+            height: 20px;
+    }
+    
+    .github-button i {
+            font-size: 24px;
+            font-size: 20px;
+    }
     }
     
     /* Mobile Optimizations */
     @media screen and (max-width: 768px) {
-    .projects-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 0 1rem;
-    }
-    
-    .project-card {
-    padding: 1.5rem;
-    }
-    
-    .project-buttons {
-    flex-direction: column;
-    }
-    
-    .download-btn, .view-details-btn {
+    .background-image {
     width: 100%;
+    height: 100vh;
+    opacity: 0.15;
+    }
+    
+    main {
+    width: 100%;
+    margin-right: 0;
+    }
+    
+    .section {
+    padding: 2rem 1rem;
     }
     
     /* Optimized Background for Mobile */
@@ -459,8 +418,9 @@
     
     /* Optimized Section Transitions for Mobile */
     .section {
-    min-height: calc(100vh - 60px);
-    padding: 2rem 1rem;
+    min-height: 100vh;
+    padding: 60px 1rem;
+    transition: opacity 0.3s ease;
     }
     
     .section-content {
@@ -483,8 +443,27 @@
     }
     
     /* Mobile Menu */
+    .hamburger-menu {
+    display: block;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 2000;
+    }
+    
     .nav-menu {
-    transition: all 0.3s ease-out;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    padding-top: 80px;
+    transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    z-index: 1500;
+    visibility: hidden;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     }
     
     .nav-menu.active {
@@ -557,15 +536,14 @@
     }
     
     /* Mobile Buttons */
-    .download-btn, .view-details-btn {
+    .download-btn, .resume-btn {
     width: 100%;
     text-align: center;
     margin-bottom: 1rem;
     }
     
     /* Remove fixed LinkedIn button styles */
-    .linkedin-button,
-    .github-button {
+    .linkedin-button {
     position: relative;
     bottom: auto;
     right: auto;
@@ -605,30 +583,23 @@
     display: none;
     }
     
-    .linkedin-button,
-    .github-button {
-    width: 32px;
-    height: 32px;
-    }
-    
-    .linkedin-button img {
-    width: 11px !important;
-    height: 11px !important;
+    .github-button,
+    .linkedin-button {
+    width: 40px;
+    height: 40px;
     }
     
     .github-button i {
-    font-size: 15px;
+    font-size: 24px;
     }
     
-    @media screen and (max-width: 768px) {
     .linkedin-button img {
-        width: 11px !important;
-        height: 11px !important;
+    width: 24px;
+    height: 24px;
     }
     
-    .github-button i {
-        font-size: 15px;
-    }
+    .linkedin-button {
+    right: 70px;
     }
     }
     
@@ -881,114 +852,4 @@
     .skill-tag {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
-    }
-    }
-    
-    /* Modal Styles */
-    .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 2000;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    }
-    
-    .modal-content {
-    position: relative;
-    background: rgba(255, 255, 255, 0.95);
-    color: #333;
-    max-width: 600px;
-    width: 90%;
-    margin: 50px auto;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
-    transform: translateY(-20px);
-    opacity: 0;
-    transition: all 0.3s ease-out;
-    }
-    
-    .modal.active .modal-content {
-    transform: translateY(0);
-    opacity: 1;
-    }
-    
-    .close-modal {
-    position: absolute;
-    right: 20px;
-    top: 15px;
-    font-size: 28px;
-    font-weight: bold;
-    color: #666;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    }
-    
-    .close-modal:hover {
-    color: #333;
-    }
-    
-    .modal-body {
-    margin-top: 1.5rem;
-    }
-    
-    .modal-body h3 {
-    color: var(--primary-color);
-    margin: 1.5rem 0 1rem;
-    font-size: 1.2rem;
-    }
-    
-    .modal-body ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 1rem 0;
-    }
-    
-    .modal-body li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-    
-    .modal-body li:last-child {
-    border-bottom: none;
-    }
-    
-    @media screen and (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        margin: 20px auto;
-        padding: 1.5rem;
-    }
-    
-    .modal-body h3 {
-        font-size: 1.1rem;
-    }
-    
-    .modal-body li {
-        font-size: 0.9rem;
-    }
-    }
-
-    /* Active Navigation Link */
-    .nav-link.active {
-        color: var(--accent-color);
-        opacity: 1;
-        font-weight: 600;
-    }
-
-    /* Ensure first section is visible by default */
-    #home.section {
-        display: flex;
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    #home.section .section-content {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    }   
