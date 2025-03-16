@@ -89,28 +89,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Show section with smooth transition
     function showSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        if (!section) return;
-
-        // Show target section
-        section.style.display = 'flex';
-        
-        // Trigger reflow
-        section.offsetHeight;
-
-        // Add visible class after brief delay
-        requestAnimationFrame(() => {
-            section.classList.add('visible');
-            const content = section.querySelector('.section-content');
-            if (content) content.classList.add('visible');
+        sections.forEach(section => {
+            if (section.id === sectionId) {
+                section.classList.add('visible');
+                section.style.display = 'flex';
+            } else {
+                section.classList.remove('visible');
+                section.style.display = 'none';
+            }
         });
 
-        // Smooth scroll to section
-        const offset = section.offsetTop - 60;
-        smoothScrollTo(offset);
-
-        // Update active state
-        updateActiveNavLink(sectionId);
+        // Update active nav link
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === `#${sectionId}`) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
     }
 
     // Toggle menu with animations
@@ -154,22 +150,18 @@ document.addEventListener("DOMContentLoaded", function () {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const targetId = link.getAttribute('href').substring(1);
-            
-            if (isMenuOpen) {
-                toggleMenu();
-                setTimeout(() => showSection(targetId), 400);
-            } else {
-                showSection(targetId);
+            showSection(targetId);
+            if (window.innerWidth <= 768) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
             }
         });
     });
 
-    // Update active navigation link
-    function updateActiveNavLink(sectionId) {
-        navLinks.forEach(link => {
-            const href = link.getAttribute('href').substring(1);
-            link.classList.toggle('active', href === sectionId);
-        });
+    // Show section based on hash URL if present
+    if (window.location.hash) {
+        const sectionId = window.location.hash.substring(1);
+        showSection(sectionId);
     }
 
     // Optimized intersection observer

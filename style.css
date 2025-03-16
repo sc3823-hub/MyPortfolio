@@ -150,8 +150,8 @@
     padding: 4rem 2rem;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.4s cubic-bezier(0.4, 0.0, 0.2, 1),
-    transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: opacity 0.4s ease-out,
+                transform 0.4s ease-out;
     will-change: opacity, transform;
     position: relative;
     }
@@ -166,12 +166,13 @@
     .section-content {
     width: 100%;
     max-width: 1200px;
+    margin: 0 auto;
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: all 0.4s ease-out;
     }
     
-    .section-content.visible {
+    .section.visible .section-content {
     opacity: 1;
     transform: translateY(0);
     }
@@ -979,4 +980,22 @@
     .modal-body li {
         font-size: 0.9rem;
     }
+    }
+
+    /* Active Navigation Link */
+    .nav-link.active {
+        color: var(--accent-color);
+        opacity: 1;
+    }
+
+    /* Ensure first section is visible by default */
+    #home.section {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    #home.section .section-content {
+        opacity: 1;
+        transform: translateY(0);
     }
