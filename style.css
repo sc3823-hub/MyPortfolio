@@ -20,7 +20,7 @@
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('5753195.webp');
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)), url('analytics.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -44,13 +44,14 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
-    url('5753195.webp') no-repeat center center;
+    url('analytics.jpg') no-repeat center center;
     background-size: cover;
     will-change: transform;
     z-index: -1;
     transform: translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    filter: blur(5px);
     }
     
     /* Navigation */
@@ -200,12 +201,12 @@
     /* Projects Grid */
     .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
     width: 100%;
     max-width: 1200px;
     margin: 2rem auto;
-    place-items: center;
+    place-items: stretch;
     }
     
     /* Home Section */
@@ -253,34 +254,80 @@
     /* Enhanced Project Cards */
     .project-card {
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
     padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
     
     .project-card:hover {
     transform: translateY(-5px);
     background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .project-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+    }
+    
+    .project-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .project-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
     }
     
     /* Enhanced Button Animations */
-    .download-btn, .resume-btn {
-    display: inline-block;
-    padding: 0.8rem 1.5rem;
-    background: var(--accent-color);
-    color: var(--text-light);
-    text-decoration: none;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    border: none;
+    .download-btn, .view-details-btn {
+    flex: 1;
+    padding: 0.8rem 1.2rem;
+    font-size: 0.95rem;
     font-weight: 500;
+    text-align: center;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
     }
     
-    .download-btn:hover, .resume-btn:hover {
-    background: #2980b9;
+    .download-btn {
+    background: linear-gradient(135deg, var(--accent-color), #2980b9);
+    color: var(--text-light);
+    text-decoration: none;
+    border: none;
+    }
+    
+    .view-details-btn {
+    background: transparent;
+    color: var(--text-light);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .download-btn:hover {
+    background: linear-gradient(135deg, #2980b9, var(--accent-color));
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    }
+    
+    .view-details-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.3);
     }
     
     /* Mobile Navigation */
@@ -323,91 +370,61 @@
     }
     
     /* Social Media Fixed Buttons */
-    .linkedin-button {
+    .linkedin-button, .github-button {
     position: fixed;
-    bottom: 20px;
-    right: 90px;
+    bottom: 30px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
-    height: 50px;
-    background: #0077B5;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     transition: all 0.3s ease;
-    will-change: transform;
     opacity: 0.9;
     z-index: 100;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
     
-    .linkedin-button img {
-    width: 24px;
-    height: 24px;
-    filter: brightness(0) invert(1);
-    transition: transform 0.3s ease;
+    .linkedin-button {
+    right: 85px;
     }
     
     .github-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    background: #333;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    will-change: transform;
-    opacity: 0.9;
-    z-index: 100;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    right: 25px;
     }
     
     .linkedin-button:hover,
     .github-button:hover {
     opacity: 1;
     transform: translateY(-5px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    }
-    
-    .github-button i {
-    font-size: 28px;
-    color: white;
-    transition: transform 0.3s ease;
-    }
-    
-    /* Mobile Optimization for Social Buttons */
-    @media screen and (max-width: 768px) {
-    .linkedin-button,
-    .github-button {
-    width: 45px;
-    height: 45px;
-    bottom: 15px;
-    }
-    
-    .linkedin-button {
-    right: 75px;
-    }
-    
-    .github-button {
-    right: 15px;
-    }
-    
-    .linkedin-button img {
-    width: 22px;
-    height: 22px;
-    }
-    
-    .github-button i {
-    font-size: 24px;
-    }
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     }
     
     /* Mobile Optimizations */
     @media screen and (max-width: 768px) {
+    .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0 1rem;
+    }
+    
+    .project-card {
+    padding: 1.5rem;
+    }
+    
+    .project-buttons {
+    flex-direction: column;
+    }
+    
+    .download-btn, .view-details-btn {
+    width: 100%;
+    }
+    
     /* Optimized Background for Mobile */
     body {
     background-attachment: scroll;
@@ -533,14 +550,15 @@
     }
     
     /* Mobile Buttons */
-    .download-btn, .resume-btn {
+    .download-btn, .view-details-btn {
     width: 100%;
     text-align: center;
     margin-bottom: 1rem;
     }
     
     /* Remove fixed LinkedIn button styles */
-    .linkedin-button {
+    .linkedin-button,
+    .github-button {
     position: relative;
     bottom: auto;
     right: auto;
@@ -580,10 +598,14 @@
     display: none;
     }
     
-    .github-button,
-    .linkedin-button {
+    .linkedin-button,
+    .github-button {
     width: 40px;
     height: 40px;
+    }
+    
+    .linkedin-button i {
+    font-size: 24px;
     }
     
     .github-button i {
@@ -595,8 +617,9 @@
     height: 24px;
     }
     
-    .linkedin-button {
-    right: 70px;
+    .github-button img {
+    width: 24px;
+    height: 24px;
     }
     }
     
@@ -849,6 +872,5 @@
     .skill-tag {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
-    }
     }
     }
