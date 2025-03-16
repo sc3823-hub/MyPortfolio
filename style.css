@@ -20,7 +20,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('5753195.webp');
+    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('Background.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -29,10 +29,6 @@ body {
     overflow-x: hidden;
     opacity: 0.95;
     transition: opacity 0.3s ease;
-}
-
-body.bg-loaded {
-    opacity: 1;
 }
 
 /* Optimized Background Image */
@@ -44,7 +40,7 @@ body::before {
     width: 100%;
     height: 100%;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
-                url('5753195.webp') no-repeat center center;
+                url('Background.jpg') no-repeat center center;
     background-size: cover;
     will-change: transform;
     z-index: -1;
@@ -53,49 +49,11 @@ body::before {
     backface-visibility: hidden;
 }
 
-/* Navigation */
-header {
-    background: var(--background-dark);
-    padding: 1rem;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    position: relative;
-}
-
-.nav-menu ul {
-    list-style: none;
-    display: flex;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-link {
-    color: var(--text-light);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
-    opacity: 0.9;
-}
-
-.nav-link:hover {
+body.bg-loaded {
     opacity: 1;
-    color: var(--accent-color);
 }
 
-/* Main Content */
+/* Main Content Area */
 main {
     padding-top: 0;
     min-height: 100vh;
@@ -140,13 +98,14 @@ main {
 
 /* Section Visibility and Transitions */
 .section {
-    min-height: 100vh;
     width: 100%;
+    max-width: 100%;
+    padding: 4rem 2rem;
+    min-height: 100vh;
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 4rem 2rem;
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.4s cubic-bezier(0.4, 0.0, 0.2, 1),
@@ -163,8 +122,8 @@ main {
 
 /* Section Content */
 .section-content {
-    width: 100%;
-    max-width: 1200px;
+    max-width: 800px;
+    margin: 0 auto;
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
@@ -408,6 +367,21 @@ main {
 
 /* Mobile Optimizations */
 @media screen and (max-width: 768px) {
+    .background-image {
+        width: 100%;
+        height: 100vh;
+        opacity: 0.15;
+    }
+
+    main {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .section {
+        padding: 2rem 1rem;
+    }
+
     /* Optimized Background for Mobile */
     body {
         background-attachment: scroll;
